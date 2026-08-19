@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+/* =============================================================
+   ASCEND — Design Tokens  ("Premium Dark" / Option A)
+   Aerospace-architectural. Borders-first depth. One cyan accent.
+   ============================================================= */
+:root {
+  /* Surface elevation — whisper-quiet lightness steps */
+  --bg:          #08090b;   /* base canvas            */
+  --surface-1:   #0d0f13;   /* cards on canvas        */
+  --surface-2:   #131720;   /* raised / hover         */
+  --surface-3:   #1a1f29;   /* floating (dropdowns)   */
+
+  /* Text hierarchy — four levels */
+  --fg:          #f3f5f7;   /* primary                */
+  --fg-secondary:#9aa3ad;   /* supporting             */
+  --fg-tertiary: #69727c;   /* metadata               */
+  --fg-muted:    #464d56;   /* disabled / faint       */
+
+  /* Border progression */
+  --border-soft:   rgba(255,255,255,.05);
+  --border:        rgba(255,255,255,.085);
+  --border-strong: rgba(255,255,255,.15);
+
+  /* Accent — electric cyan, the only chromatic voice */
+  --accent:        #34e6e0;
+  --accent-bright: #6af2ed;
+  --accent-deep:   #0bb9c4;
+  --accent-dim:    rgba(52,230,224,.12);
+  --accent-glow:   rgba(52,230,224,.30);
+  --on-accent:     #042120;  /* text on accent fills  */
+
+  /* Semantic */
+  --success: #38d39b;
+  --warning: #e8b13d;
+  --danger:  #f0635f;
+
+  /* Control surfaces (inset inputs) */
+  --control:        #0a0c10;
+  --control-border: rgba(255,255,255,.10);
+
+  /* Radius scale */
+  --radius-sm: 3px;
+  --radius:    7px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Fonts (wired from next/font in layout.tsx) */
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    var(--font-space-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Section rhythm */
+  --pad-x: clamp(20px, 5vw, 40px);
+}
+
+/* Map tokens to Tailwind v4 utilities (bg-*, text-*, border-*, font-*, rounded-*) */
+@theme inline {
+  --color-bg:          var(--bg);
+  --color-surface-1:   var(--surface-1);
+  --color-surface-2:   var(--surface-2);
+  --color-surface-3:   var(--surface-3);
+
+  --color-fg:          var(--fg);
+  --color-fg-secondary:var(--fg-secondary);
+  --color-fg-tertiary: var(--fg-tertiary);
+  --color-fg-muted:    var(--fg-muted);
+
+  --color-border-soft:   var(--border-soft);
+  --color-border-line:   var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-accent:        var(--accent);
+  --color-accent-bright: var(--accent-bright);
+  --color-accent-deep:   var(--accent-deep);
+  --color-accent-dim:    var(--accent-dim);
+  --color-on-accent:     var(--on-accent);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger:  var(--danger);
+
+  --color-control:        var(--control);
+  --color-control-border: var(--control-border);
+
+  --font-display: var(--font-display);
+  --font-mono:    var(--font-mono);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+}
+
+/* ============================ Base ============================ */
+* { border-color: var(--border); }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: var(--on-accent); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Quiet custom scrollbar */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--surface-3);
+  border: 3px solid var(--bg);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: #2a313c; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===================== Reusable utilities ===================== */
+@layer utilities {
+  /* telemetry label */
+  .label-mono {
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--fg-tertiary);
+  }
+
+  /* tight display headline */
+  .display {
+    font-weight: 600;
+    letter-spacing: -.02em;
+    line-height: .98;
+  }
+
+  /* outlined text */
+  .text-stroke {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--fg-secondary);
+  }
+
+  /* hairline divider */
+  .hairline { height: 1px; background: var(--border); }
+
+  /* atmospheric grid background */
+  .bg-grid {
+    background-image:
+      linear-gradient(var(--border-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* subtle film grain */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* accent text glow */
+  .glow-accent { text-shadow: 0 0 28px var(--accent-glow); }
+
+  /* container */
+  .shell { width: 100%; max-width: 1240px; margin-inline: auto; padding-inline: var(--pad-x); }
+
+  /* infinite marquee */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .animate-marquee { animation: marquee 38s linear infinite; }
+}
