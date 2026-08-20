@@ -1,71 +1,43 @@
 import Link from "next/link";
-import { ROLES } from "@/lib/site";
-import { SectionHeader } from "@/components/ui/SectionHeader";
-import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
+import { ROLES } from "@/lib/staffing";
 
+/* Staffing is the secondary business, so on the homepage it is a
+   cross-link and nothing more. The full story lives at /staffing. No
+   placement count, no client, no retention rate: the capability is
+   offered, not proven. */
 export function StaffingSection() {
   return (
-    <section id="staffing" className="scroll-mt-24 py-28">
+    <section className="py-16 md:py-20">
       <div className="shell">
-        <SectionHeader
-          label="// Staffing"
-          title={
-            <>
-              The seats you can&apos;t fill,{" "}
-              <span className="text-fg-muted font-light">handled by people</span>{" "}
-              you didn&apos;t train.
-            </>
-          }
-          lead="Every person we place is already trained on the software you run. You decide who joins the team; we handle everything that comes before."
-        />
+        <Reveal>
+          <Link
+            href="/staffing"
+            className="group flex flex-col gap-6 rounded-lg border border-border-line bg-surface-1 p-7 transition-colors duration-500 hover:border-border-strong hover:bg-surface-2 md:flex-row md:items-center md:gap-10 md:p-9"
+          >
+            <div className="min-w-0 flex-1">
+              <p className="label-mono">{"// Also from Ascend"}</p>
+              <h2 className="mt-4 font-display text-[1.28rem] leading-snug font-medium text-fg">
+                Some practices need a person, not an operator.
+              </h2>
+              <p className="mt-3 max-w-[58ch] text-[0.93rem] leading-[1.7] font-light text-fg-secondary">
+                Ascend Staffing places pre-trained remote professionals:{" "}
+                {ROLES.map((r) => r.short.toLowerCase()).join(", ")}. Deployed in
+                days, and you pay only after you hire.
+              </p>
+            </div>
 
-        <RevealGroup className="mt-16 grid gap-px overflow-hidden rounded-xl border border-border-line bg-border-soft md:grid-cols-3">
-          {ROLES.map((role) => (
-            <RevealItem key={role.slug}>
-              <Link
-                href={`/roles/${role.slug}`}
-                className="group flex h-full flex-col bg-surface-1 p-8 transition-colors duration-300 hover:bg-surface-2"
+            <span className="inline-flex shrink-0 items-center gap-3 font-mono text-[0.76rem] tracking-[0.08em] text-accent transition-colors duration-300 group-hover:text-accent-bright">
+              See staffing
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-300 group-hover:translate-x-1"
               >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs tracking-[0.16em] text-fg-tertiary">
-                    {role.index}
-                  </span>
-                  <span className="font-mono text-[0.6rem] tracking-wider text-fg-muted uppercase">
-                    {role.tools[0]} · {role.tools[1]}
-                  </span>
-                </div>
-
-                <h3 className="mt-7 font-display text-xl font-medium text-fg">
-                  {role.name}
-                </h3>
-                <p className="mt-2 text-sm font-medium text-accent">
-                  {role.tagline}
-                </p>
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-fg-secondary font-light">
-                  {role.blurb}
-                </p>
-
-                <div className="mt-7 flex items-end justify-between border-t border-border-soft pt-5">
-                  <div>
-                    <div className="font-display text-lg font-semibold text-fg">
-                      ${role.price.toLocaleString()}
-                      <span className="text-xs font-normal text-fg-tertiary">
-                        {" "}
-                        / mo
-                      </span>
-                    </div>
-                    <div className="mt-0.5 font-mono text-[0.6rem] tracking-wider text-fg-muted uppercase line-through">
-                      ${role.inHouse.toLocaleString()} in-house
-                    </div>
-                  </div>
-                  <span className="font-mono text-xs text-accent opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
-                    View role →
-                  </span>
-                </div>
-              </Link>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+                →
+              </span>
+            </span>
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

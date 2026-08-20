@@ -1,76 +1,79 @@
 import type { Metadata } from "next";
-import { DemoForm } from "@/components/forms/DemoForm";
+import { PageHero } from "@/components/ui/PageHero";
 import { Reveal } from "@/components/ui/Reveal";
-import { STATS, SITE } from "@/lib/site";
+import { LeakReportForm } from "@/components/forms/LeakReportForm";
+import { LEAKS, SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Book a demo",
+  title: "Book the 20-minute call",
   description:
-    "Book a 20-minute demo with Ascend. We'll map your roles, show the AI platform in action, and build a deployment plan. No upfront cost.",
+    "Send us your last twelve months and we will run your own numbers through the four leaks, with every assumption named and arguable. If the number is not big enough to justify the fee, we will tell you on the call.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {
   return (
-    <div className="pt-36 md:pt-44">
-      <section className="shell grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        {/* left: pitch */}
-        <div className="lg:sticky lg:top-28">
-          <Reveal>
-            <span className="label-mono text-accent">{"// Book a demo"}</span>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <h1 className="display mt-5 text-[clamp(2.4rem,5.5vw,4rem)] text-fg">
-              Let&apos;s map your{" "}
-              <span className="text-fg-muted font-light">first hire.</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={0.16}>
-            <p className="mt-6 max-w-md text-[1.08rem] leading-relaxed text-fg-secondary font-light">
-              Twenty minutes. We&apos;ll learn your workflows, show you the right
-              talent and the AI platform live, and give you a deployment plan and
-              exact pricing.
-            </p>
-          </Reveal>
+    <>
+      <PageHero
+        label="// The ask"
+        title={<>Send us your last twelve months.</>}
+        lead="We will run your own numbers through the four leaks and show you the actual figure for your practice, with every assumption named and arguable. Twenty minutes. If the number is not big enough to justify the fee, we will tell you on the call."
+      />
 
-          <Reveal delay={0.24}>
-            <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border-line bg-border-soft">
-              {STATS.map((s) => (
-                <div key={s.label} className="bg-surface-1 px-5 py-6">
-                  <div
-                    className={`font-display text-2xl font-semibold ${
-                      s.accent ? "text-accent" : "text-fg"
-                    }`}
-                  >
-                    {s.value}
-                  </div>
-                  <div className="mt-1.5 font-mono text-[0.6rem] tracking-wider text-fg-tertiary uppercase">
-                    {s.label}
-                  </div>
+      <section className="pb-24 md:pb-28">
+        <div className="shell">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14">
+            <div>
+              <LeakReportForm />
+            </div>
+
+            <aside className="lg:pt-2">
+              <Reveal delay={0.1}>
+                <div className="rounded-lg border border-border-line bg-surface-1 p-7">
+                  <h2 className="label-mono">{"// What happens next"}</h2>
+                  <p className="mt-6 text-[0.93rem] leading-[1.7] font-light text-fg-secondary">
+                    We reply within one business day with a time. Before the call
+                    we ask for an export of your last twelve months of appointments
+                    if you have one. If you do not, the call still works and we use
+                    ranges instead.
+                  </p>
                 </div>
-              ))}
-            </div>
-          </Reveal>
+              </Reveal>
 
-          <Reveal delay={0.3}>
-            <div className="mt-8 flex flex-col gap-2 text-sm text-fg-secondary">
-              <a
-                href={`mailto:${SITE.email}`}
-                className="transition-colors hover:text-accent"
-              >
-                {SITE.email}
-              </a>
-              <span className="text-fg-tertiary">{SITE.phone}</span>
-            </div>
-          </Reveal>
+              <Reveal delay={0.16}>
+                <div className="mt-5 rounded-lg border border-border-line bg-bg p-7">
+                  <h2 className="label-mono">{"// What we run it through"}</h2>
+                  <ol className="mt-6 space-y-3.5">
+                    {LEAKS.map((leak) => (
+                      <li key={leak.index} className="flex gap-3.5">
+                        <span className="mt-[2px] font-mono text-[0.7rem] tabular-nums text-fg-muted">
+                          {leak.index}
+                        </span>
+                        <span className="text-[0.89rem] leading-[1.55] font-light text-fg-secondary">
+                          {leak.title}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.22}>
+                <p className="mt-5 px-1 text-[0.85rem] leading-[1.7] font-light text-fg-tertiary">
+                  Prefer email? Write to{" "}
+                  <a
+                    href={`mailto:${SITE.email}`}
+                    className="text-accent underline-offset-4 transition-colors duration-300 hover:text-accent-bright hover:underline"
+                  >
+                    {SITE.email}
+                  </a>{" "}
+                  and we will reply the same way.
+                </p>
+              </Reveal>
+            </aside>
+          </div>
         </div>
-
-        {/* right: form */}
-        <Reveal delay={0.12}>
-          <DemoForm />
-        </Reveal>
       </section>
-
-      <div className="h-20" />
-    </div>
+    </>
   );
 }

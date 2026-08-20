@@ -5,6 +5,7 @@ import { Atmosphere } from "@/components/ui/Atmosphere";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { SITE } from "@/lib/site";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -20,44 +21,42 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
-const SITE = {
-  name: "Ascend",
-  url: "https://goascend.co",
-  tagline: "Remote healthcare staffing & practice automation",
-  description:
-    "Ascend places pre-trained, bilingual remote talent in dental & medical practices — reception, billing, insurance, coding and scribes — and automates the rest with AI. Cut staffing costs up to 50%. Pay only after you hire.",
-};
+const TAGLINE = "The AI operator for independent practices";
+
+const DESCRIPTION =
+  "Ascend answers every enquiry across chat, SMS, WhatsApp, Instagram and Messenger, refills the chair a cancellation empties, and brings back the patients who quietly stopped coming. Assisted by default: nothing reaches a patient until you approve it.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — ${SITE.tagline}`,
-    template: `%s — ${SITE.name}`,
+    default: `${SITE.name} · ${TAGLINE}`,
+    template: `%s · ${SITE.name}`,
   },
-  description: SITE.description,
+  description: DESCRIPTION,
+  /* Target the buyer's problem, never a vertical. A vertical may appear only
+     inside an inclusive enumeration in body copy. */
   keywords: [
-    "remote dental staff",
-    "medical virtual assistant",
-    "dental receptionist outsourcing",
-    "medical billing outsourcing",
-    "insurance claims processing",
-    "medical scribe",
-    "AI receptionist",
-    "practice automation",
-    "healthcare staffing",
+    "AI operator for independent practices",
+    "patient reactivation software",
+    "practice front desk automation",
+    "fill cancelled appointments automatically",
+    "AI receptionist for web chat and WhatsApp",
+    "patient recall and win back",
+    "practice management operating system",
+    "review requests and reputation for practices",
   ],
   authors: [{ name: SITE.name }],
   openGraph: {
     type: "website",
     siteName: SITE.name,
-    title: `${SITE.name} — ${SITE.tagline}`,
-    description: SITE.description,
+    title: `${SITE.name} · ${TAGLINE}`,
+    description: DESCRIPTION,
     url: SITE.url,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} — ${SITE.tagline}`,
-    description: SITE.description,
+    title: `${SITE.name} · ${TAGLINE}`,
+    description: DESCRIPTION,
   },
   robots: { index: true, follow: true },
 };
@@ -72,10 +71,31 @@ export default function RootLayout({
       className={`${sora.variable} ${spaceMono.variable} antialiased`}
     >
       <body className="min-h-screen bg-bg text-fg">
+        {/* Scroll reveals are rendered hidden and animated in by script, so
+            without script the page would be a blank canvas below the fold.
+            The same class of failure as a metric that renders zero: the
+            honest content has to be the fallback. */}
+        <noscript>
+          <style>{`
+            [style*="opacity:0"],
+            [style*="opacity: 0"] {
+              opacity: 1 !important;
+              transform: none !important;
+            }
+          `}</style>
+        </noscript>
+        <a
+          href="#main"
+          className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-[70] focus-visible:rounded-sm focus-visible:bg-accent focus-visible:px-4 focus-visible:py-2 focus-visible:font-mono focus-visible:text-sm focus-visible:text-on-accent"
+        >
+          Skip to content
+        </a>
         <Atmosphere />
         <ScrollProgress />
         <Navbar />
-        <main className="relative z-10">{children}</main>
+        <main id="main" className="relative z-10">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

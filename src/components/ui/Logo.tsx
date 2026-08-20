@@ -36,7 +36,7 @@ export function Logo({
   return (
     <Link
       href="/"
-      aria-label="Ascend — home"
+      aria-label="Ascend, home"
       className={`group inline-flex items-center gap-4 text-fg ${className}`}
     >
       <Mark className="h-[26px] w-[26px] shrink-0 transition-colors duration-300 group-hover:text-accent" />
