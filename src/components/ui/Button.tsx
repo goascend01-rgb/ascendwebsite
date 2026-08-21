@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from "react";
 type Variant = "primary" | "ghost" | "quiet";
 
 const base =
-  "inline-flex items-center justify-center gap-2 font-mono text-[0.8rem] tracking-[0.04em] rounded-sm transition-all duration-300 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 disabled:opacity-50 disabled:pointer-events-none";
+  "inline-flex items-center justify-center gap-2 font-mono text-[0.8rem] tracking-[0.04em] rounded-sm transition-[color,background-color,border-color,box-shadow,transform] duration-300 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 disabled:opacity-50 disabled:pointer-events-none";
 
 const sizes = {
   md: "px-6 py-3.5",

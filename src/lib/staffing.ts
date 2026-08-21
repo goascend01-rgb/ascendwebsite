@@ -118,7 +118,7 @@ export const STAFFING_PROCESS: {
   {
     day: "Day 1 to 3",
     title: "We match pre-trained talent",
-    desc: "Hand-picked from a bench of vetted professionals.",
+    desc: "Hand-picked and vetted for your role. We will tell you on the call exactly who is available for it today.",
   },
   {
     day: "Day 3 to 4",

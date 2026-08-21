@@ -1,3 +1,5 @@
+import type { EvidenceState } from "./confidence";
+
 /* ==============================================================
    Ascend, single source of truth for platform and shared content.
 
@@ -113,8 +115,10 @@ export type ProductTruthCard = {
   title: string;
   reason: string;
   chip: string;
-  /** Fill of the confidence rail, 0 to 1. Zero means no evidence at all. */
-  confidence: number;
+  /** The product's own metric state. Never an invented score: a deterministic
+      recommendation has no honest Emerging/Established/Proven tier, and this
+      site used to print one anyway. See lib/confidence.ts. */
+  evidence: EvidenceState;
 };
 
 export const PRODUCT_TRUTH_CARDS: ProductTruthCard[] = [
@@ -126,7 +130,7 @@ export const PRODUCT_TRUTH_CARDS: ProductTruthCard[] = [
     reason:
       "64 patients cancelled or no-showed in the last 3 months and never rebooked. A win-back campaign could recover an estimated $3,584 (at a 20% return rate).",
     chip: "Estimated · assumptions shown",
-    confidence: 0.6,
+    evidence: "estimated",
   },
   {
     kind: "blocker",
@@ -136,7 +140,7 @@ export const PRODUCT_TRUTH_CARDS: ProductTruthCard[] = [
     reason:
       "You have 1,240 contacts, and I have watched 38 of them complete a visit, so I can't tell yet who has drifted away. I start counting from the first visit I watch happen, which means a reactivation list would take months to build from scratch. If your previous system has visit dates, importing them lets me find lapsed patients today.",
     chip: "No estimate. The opportunity is real and its size is genuinely unknown.",
-    confidence: 0.15,
+    evidence: "unknown",
   },
   {
     kind: "metric",
@@ -146,7 +150,7 @@ export const PRODUCT_TRUTH_CARDS: ProductTruthCard[] = [
     reason:
       "Not $0. Zero would mean we checked and nothing happened. This means the evidence has not arrived yet, and it names what it is waiting for.",
     chip: "",
-    confidence: 0,
+    evidence: "unknown",
   },
 ];
 
@@ -198,11 +202,11 @@ export const DOMAINS: Domain[] = [
     eyebrow: "FRONT DESK",
     name: "Answers everything",
     summary:
-      "Web chat, SMS, WhatsApp, Instagram and Facebook Messenger. Grounded strictly in your knowledge base. It will not invent a price or a policy, and it hands over the moment it does not know. A question about clinical suitability is routed to a human before any model reads it, because that rule lives in code and not in a prompt.",
+      "Web chat, SMS, WhatsApp, Instagram and Facebook Messenger. Grounded strictly in your knowledge base. It will not invent a price or a policy, and it hands over the moment it does not know. Anything clinical is routed, before a model is chosen, to the only tier that is able to hand off to a person. That decision lives in code rather than in a prompt, so no cheap tier can answer a safety question just because it recognised a keyword.",
     detail: [
       "Channels: web chat widget, SMS, WhatsApp, Instagram DM, Facebook Messenger.",
       "Every answer is grounded in your knowledge base: your prices, your policies, your hours, your services. When it does not have the answer it says so and hands over, rather than producing something plausible.",
-      "The routing happens before any model is involved. A greeting, an opening hours question or a directions question is answered deterministically at no cost. A pricing or insurance question goes to a knowledge base tier. Anything clinical, anything urgent, and any explicit request for a human goes straight to the full receptionist, which is the only tier that can escalate. That ordering is code, not an instruction in a prompt, which means it cannot be talked out of it.",
+      "The routing happens before any model is involved. A greeting, an opening hours question or a directions question is answered deterministically at no cost. A pricing or insurance question goes to a knowledge base tier, which has your knowledge base and no ability to escalate. Anything clinical, anything urgent, and any explicit request for a human goes straight to the full receptionist, which is the only tier that can hand off to a person. That ordering is code, not an instruction in a prompt, which means it cannot be talked out of it, and a safety question can never be pulled down to a tier that could not escalate even if it wanted to.",
     ],
     stops:
       "It does not answer the telephone, and it does not read your clinical chart. The receptionist and the clinical record are separated at the table level, not by asking the model nicely.",
@@ -214,7 +218,7 @@ export const DOMAINS: Domain[] = [
     summary:
       "When a slot frees up, Ascend offers it to the patients already holding a later appointment for the same treatment, longest wait first. The first yes takes it. If nobody claims it in time, Ascend tells you, rather than quietly dropping it.",
     detail: [
-      "When an appointment is cancelled, Ascend looks for patients who already hold a later appointment for the same treatment, ranks them longest wait first, and offers the freed slot. The first patient to say yes gets moved in, and the rest are released automatically. If nobody claims it in time, that comes back to you as a line in the queue.",
+      "The offer goes to several patients at once and the first to accept is moved in, with the rest released automatically, so nobody arrives to find the slot gone. If the window closes unclaimed, that becomes a line in your queue rather than a silent non-event.",
       "Patient forms go out as tokenised links, so a form reaches one patient and only that patient.",
     ],
     stops:
@@ -227,7 +231,7 @@ export const DOMAINS: Domain[] = [
     summary:
       "Finds who has drifted using your own visit history, values them from your own average visit value, and runs consent checked reactivation, recall, win back and birthday outreach. Somebody who opts out is never contacted again on that channel.",
     detail: [
-      "Ascend finds the patients who have drifted, using your visit history rather than a guess. A patient is somebody who has completed a visit; a lead is somebody who never has; lapsed means a patient whose last completed visit falls outside your recency window. Those are three different states and Ascend never collapses them.",
+      "A patient is somebody who has completed a visit. A lead is somebody who never has. Lapsed means a patient whose last completed visit falls outside your recency window. Those are three different states, most software collapses them into one contact list, and collapsing them is how a practice ends up sending a win-back message to somebody who has never been through the door.",
       "It values a win back list from your own average visit value. If you have not set one, it says so and asks, rather than printing a number it made up.",
       "Every message is gated on consent, per channel. An SMS opt out is honoured immediately and permanently, and it says nothing about permission to use a photo, which is a different consent entirely.",
     ],
@@ -241,7 +245,7 @@ export const DOMAINS: Domain[] = [
     summary:
       "Asks patients for a review at the right moment. Four and five star replies go to your Google link. One to three star replies are captured privately and land on your desk as a task, never in public. Drafts your reply to public reviews you bring in.",
     detail: [
-      "A review request goes out at a delay you set after the visit. A four or five star reply is routed to your own Google review link. A one to three star reply is captured privately, never posted anywhere, and lands on your desk as a task with the patient's words attached, so somebody can pick up the phone.",
+      "The split matters more than the request does. A four or five star reply reaches your public Google listing, and a one to three star reply is captured privately, never posted anywhere, and lands on your desk as a task with the patient's own words attached, while there is still time to fix it.",
       "For public reviews, Ascend drafts your reply, with a hard rule that a public response may never confirm treatment details or even that the person is a patient.",
     ],
     stops:
@@ -254,7 +258,8 @@ export const DOMAINS: Domain[] = [
     summary:
       "Case studies, posts, collages and reels built from your own consented cases. The consent gate is enforced in code before anything can be published, so a case without permission cannot reach a public feed by any route.",
     detail: [
-      "Cases, posts, collages and reels, built from your own consented cases, with the consent gate enforced in code before anything can publish. A case whose consent is missing cannot reach a public feed by any route, including a route somebody adds later, because the gate sits at the exit rather than in the editor.",
+      "The gate sits at the exit rather than in the editor, which is what makes it hold: a case whose consent is missing cannot reach a public feed by any route, including a route somebody adds next year without knowing the rule existed.",
+      "This is the smallest part of what Creative Studio does. The research, the media vault, the case scoring and the reel builder are set out in full further down this page.",
     ],
     stops:
       "Public content is public: it never references a patient's history, ever. Private outreach may. That line is absolute and it is why the two systems share nothing but a word.",
@@ -264,14 +269,14 @@ export const DOMAINS: Domain[] = [
     eyebrow: "COMMAND",
     name: "Tells you what matters",
     summary:
-      "One ranked queue each morning of what needs a human, each item carrying its reason and its evidence. A daily brief and a weekly board meeting, both built from your own numbers, neither of them a template.",
+      "One ranked queue each morning of what needs a human, each item carrying its reason and its evidence. A daily brief and a written weekly review, both built from your own numbers, neither of them a template.",
     detail: [
       "One ranked queue. Each item carries its reason, its evidence and its confidence, and the ones Ascend cannot back it says so about instead of hiding.",
       "A daily brief, written from sixteen producers, where every line names the thing that justifies it and no line appears unless that thing actually answered. A producer that failed is reported as failed, never as an all clear.",
-      "A weekly board meeting built from your own numbers.",
+      "A written review each week, built from your own numbers and compared against the week before.",
     ],
     stops:
-      "The brief has no buttons. It answers what you should know. The Command Center answers what you should do. Keeping them apart is deliberate.",
+      "The brief has no buttons. It answers what you should know. The queue answers what you should do. Keeping them apart is deliberate.",
   },
 ];
 
@@ -322,7 +327,7 @@ export const PRIVACY_CONTRACT: { allowed: boolean; body: string }[] = [
   },
   {
     allowed: true,
-    body: "Participation is opt in. Withdraw and everything you contributed is purged, including from the published record.",
+    body: "Nothing identifying your practice ever enters the pool, so there is nothing there to reclaim: you exist in it only as a one way hash, and only patterns that generalise are emitted at all. Ask us to stop contributing and we stop, and what you already contributed stops counting as current evidence.",
   },
   {
     allowed: false,
@@ -357,7 +362,9 @@ export const TRUST_LADDER: { stage: string; title: string; body: string }[] = [
   },
 ];
 
-/** The five fields every recommendation carries. Real product structure. */
+/** The five fields a pattern-derived recommendation carries. Real product
+    structure: a deterministic count is not one of these and does not pretend
+    to be. */
 export const RECOMMENDATION_FIELDS: { field: string; question: string }[] = [
   { field: "Belief", question: "what it believes" },
   { field: "Relevance", question: "why it may apply to you" },
@@ -411,8 +418,8 @@ export const TIERS: Tier[] = [
       "Instagram and Facebook Messenger",
       "Slot fill when a chair frees up",
       "Reactivation, recall and win back outreach",
-      "Command Center, every item with its reason",
-      "Daily brief and weekly board meeting",
+      "The morning queue, every item with its reason",
+      "Daily brief and written weekly review",
       "Intelligence Network",
       "Autopilot with shadow preview",
       "Acquisition economics",
@@ -492,12 +499,12 @@ export const INSTALL_STEPS: { window: string; title: string; body: string }[] = 
   {
     window: "D4 to 7",
     title: "It learns how you answer",
-    body: "Knowledge base built from your site, your policies, your pricing and the questions your front desk really fields. Voice tuned until it sounds like your practice.",
+    body: "Knowledge base built from your site, your policies, your pricing and the questions your front desk really fields. Its writing tuned until it reads like your practice rather than like software.",
   },
   {
     window: "D8 to 14",
     title: "Channels connected",
-    body: "Number provisioned, WhatsApp, Instagram, Facebook and the web widget live, consent state imported so nobody who opted out is ever contacted.",
+    body: "Your messaging number, WhatsApp, Instagram, Facebook and the web widget live, consent state imported so nobody who opted out is ever contacted.",
   },
   {
     window: "D15 to 30",
@@ -551,7 +558,7 @@ export const PROTECTIONS: { title: string; body: string }[] = [
   },
   {
     title: "You are never held hostage",
-    body: "Export any time, leave the Network and your contribution is purged, thirty days notice, no exit fee.",
+    body: "Export any time, ask us to stop contributing to the Network and we stop, thirty days notice, no exit fee.",
   },
 ];
 
@@ -639,7 +646,7 @@ export const PRINCIPLES: { index: string; title: string; body: string }[] = [
 export const SECURITY_SECTIONS: { title: string; body: string }[] = [
   {
     title: "Where PHI lives",
-    body: "Patient data is processed by four vendors and no others: Anthropic for AI, Twilio for messaging, Neon for the database, Render for the application.",
+    body: "Patient data is processed by five vendors and no others: Anthropic for AI, Twilio for SMS and WhatsApp, Meta for Instagram and Facebook Messenger, Neon for the database, Render for the application.",
   },
   {
     title: "Where Ascend itself sits",
@@ -663,7 +670,7 @@ export const SECURITY_SECTIONS: { title: string; body: string }[] = [
   },
   {
     title: "Your data is yours",
-    body: "Export any time. Thirty days notice. No exit fee. Leave the Network and everything you contributed is purged, including from the published record.",
+    body: "Export any time. Thirty days notice. No exit fee. Ask us to stop contributing to the Network and we stop. Your past contributions stop counting as current evidence and decay out of it, and no identifier of your practice was ever stored in it to begin with.",
   },
 ];
 
@@ -676,6 +683,11 @@ export const SUBPROCESSORS: {
   { name: "Twilio", purpose: "SMS and WhatsApp messaging", processesPatientData: true },
   { name: "Neon", purpose: "Application database", processesPatientData: true },
   { name: "Render", purpose: "Application hosting", processesPatientData: true },
+  {
+    name: "Meta Platforms",
+    purpose: "Instagram Direct and Facebook Messenger message transport",
+    processesPatientData: true,
+  },
   { name: "Clerk", purpose: "Staff authentication", processesPatientData: false },
   {
     name: "Resend",

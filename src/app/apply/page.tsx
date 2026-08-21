@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { ApplyForm } from "@/components/forms/ApplyForm";
 import { PageHero } from "@/components/ui/PageHero";
 import { Reveal } from "@/components/ui/Reveal";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Apply as talent",
   description:
     "Join the Ascend bench of remote professionals. Full-time remote roles in reception, billing and insurance, coding and scribing, working with independent practices in the United States.",
-  alternates: { canonical: "/apply" },
-};
+  path: "/apply",
+});
 
 const PERKS = [
   { title: "Fully remote", desc: "Work from home, full-time, with US practices." },
@@ -28,7 +29,7 @@ export default function ApplyPage() {
             <span className="text-fg-muted">from anywhere.</span>
           </>
         }
-        lead="We place trained professionals into full-time remote roles with independent practices in the United States, whether that is a dental practice, an esthetic clinic, a medspa or another appointment-based practice. If you are sharp, reliable and good with people, we want to meet you."
+        lead="We are building a bench of trained professionals for full-time remote roles with independent practices in the United States, whether that is a dental practice, an esthetic clinic, a medspa or another appointment-based practice. We are early, and we would rather tell you that than imply a queue of placements that does not exist yet. If you are sharp, reliable and good with people, we want to meet you."
       />
 
       <section className="pb-12">

@@ -87,8 +87,9 @@ export function ApplyForm() {
             <TextInput id="aloc" name="location" />
           </Field>
 
-          <Field label="Role you are applying for">
+          <Field label="Role you are applying for" htmlFor="arole">
             <Select
+              label="Role you are applying for"
               id="arole"
               options={ROLES}
               value={role}
@@ -98,8 +99,9 @@ export function ApplyForm() {
             <input type="hidden" name="role" value={role} />
           </Field>
 
-          <Field label="Years of experience">
+          <Field label="Years of experience" htmlFor="aexp">
             <Select
+              label="Years of experience"
               id="aexp"
               options={EXPERIENCE}
               value={exp}

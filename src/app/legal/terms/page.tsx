@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import {
   LegalLayout,
@@ -11,13 +12,13 @@ import {
 import { TokenText } from "@/components/ui/Token";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Terms of service",
   description:
     "The agreement between Ascend and the practices that use it: what the service is, what it is not, who is responsible for what, and how the ninety day working commitment operates.",
-  alternates: { canonical: "/legal/terms" },
+  path: "/legal/terms",
   robots: { index: true, follow: true },
-};
+});
 
 const UPDATED = "20 August 2026";
 
@@ -180,11 +181,14 @@ export default function TermsPage() {
           transfers any right in it to you.
         </P>
         <P>
-          Contributions to the Intelligence Network are opt in and anonymised. A
-          contribution carries principles and cannot carry magnitudes: no revenue, no
-          pricing, no patient counts, no conversion rates, no budgets. Withdraw from
-          the Network and your contribution is purged, including from the published
-          record.
+          Live practices contribute to the Intelligence Network by default, and we
+          will stop your account contributing on request. A contribution carries
+          principles and cannot carry magnitudes: no revenue, no pricing, no patient
+          counts, no conversion rates, no budgets, and no identifier of your practice.
+          Your practice is recorded only as a one way hash. On withdrawal a past
+          contribution stops being treated as current evidence and decays out of the
+          record rather than being deleted, because the observation itself genuinely
+          happened.
         </P>
       </LegalSection>
 

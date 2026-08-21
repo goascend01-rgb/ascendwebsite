@@ -3,6 +3,18 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
+/* A labelled field.
+
+   The hint and the error are WIRED to the control rather than merely sitting
+   near it: both get an id, the control is given `aria-describedby` pointing at
+   whichever is showing, and `aria-invalid` when it failed. Without that, a
+   screen reader user hears "Email, edit text" and is never told which field
+   was rejected or why, which is the difference between a form that is
+   annoying and one that is impossible.
+
+   `children` is a render prop so the ids can reach the control. The plain
+   ReactNode form is still accepted for controls that manage their own
+   description, such as the custom Select. */
 export function Field({
   label,
   htmlFor,
@@ -13,11 +25,29 @@ export function Field({
 }: {
   label: string;
   htmlFor?: string;
-  children: ReactNode;
+  children:
+    | ReactNode
+    | ((a11y: {
+        id?: string;
+        "aria-describedby"?: string;
+        "aria-invalid"?: boolean;
+      }) => ReactNode);
   hint?: string;
   optional?: boolean;
   error?: string;
 }) {
+  const auto = useId();
+  const base = htmlFor ?? auto;
+  const hintId = hint ? `${base}-hint` : undefined;
+  const errorId = error ? `${base}-error` : undefined;
+  const describedBy = errorId ?? hintId;
+
+  const a11y = {
+    id: htmlFor,
+    "aria-describedby": describedBy,
+    "aria-invalid": error ? true : undefined,
+  };
+
   return (
     <div>
       <label htmlFor={htmlFor} className="block">
@@ -28,9 +58,10 @@ export function Field({
           )}
         </span>
       </label>
-      {children}
+      {typeof children === "function" ? children(a11y) : children}
       {error ? (
         <span
+          id={errorId}
           className="mt-1.5 block text-xs font-light"
           style={{ color: "var(--danger)" }}
         >
@@ -38,7 +69,7 @@ export function Field({
         </span>
       ) : (
         hint && (
-          <span className="mt-1.5 block text-xs font-light text-fg-tertiary">
+          <span id={hintId} className="mt-1.5 block text-xs font-light text-fg-tertiary">
             {hint}
           </span>
         )
@@ -86,7 +117,7 @@ export function FormError({
       <p className="font-mono text-[0.66rem] tracking-[0.18em] uppercase" style={{ color: "var(--danger)" }}>
         Not sent
       </p>
-      <p className="mt-3 text-[0.92rem] leading-[1.65] font-light text-fg-secondary">
+      <p className="mt-3 text-[0.97rem] leading-[1.65] font-light text-fg-secondary">
         {message}
       </p>
       <a
@@ -127,12 +158,18 @@ export function Select({
   onChange,
   placeholder = "Select",
   id,
+  label,
+  describedBy,
 }: {
   options: string[];
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
   id?: string;
+  /** The visible field label. Without it the trigger is announced only by
+      its placeholder, so "Select" is the entire accessible name. */
+  label?: string;
+  describedBy?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
@@ -204,6 +241,8 @@ export function Select({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={open ? listId : undefined}
+        aria-label={label}
+        aria-describedby={describedBy}
         className={`${fieldBase} flex items-center justify-between text-left ${
           open ? "border-accent" : ""
         }`}
@@ -226,6 +265,7 @@ export function Select({
           <motion.ul
             id={listId}
             role="listbox"
+            aria-label={label}
             tabIndex={-1}
             onKeyDown={onListKeyDown}
             initial={{ opacity: 0, y: -6 }}

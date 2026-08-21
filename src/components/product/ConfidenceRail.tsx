@@ -1,45 +1,51 @@
 "use client";
 
 import { motion } from "motion/react";
-import { confidenceState, type ConfidenceState } from "@/lib/confidence";
+import {
+  EVIDENCE_COLOR,
+  EVIDENCE_FILL,
+  EVIDENCE_LABEL,
+  type EvidenceState,
+} from "@/lib/confidence";
 
 /* The signature element of this site.
 
-   A hairline rail on the leading edge of every product object, whose fill
-   encodes how much evidence sits behind what the card says. It is EMPTY
-   when there is none, which is the whole argument: colour here is earned
-   by evidence rather than applied for decoration.
+   A hairline on the leading edge of every product object, whose fill encodes
+   what KIND of thing the number beside it is. It is empty when there is
+   nothing to measure, which is the whole argument: colour here is earned by
+   evidence rather than applied for decoration.
 
-     backed   (>= 0.5)   cyan, the only lit state
-     held     (0 to 0.5) amber, a real signal that has not cleared the floor
-     unknown  (0)        unlit, track only
+     measured        full, cyan
+     estimated       partial, cyan
+     unknown         short, amber
+     not_applicable  unlit, with a dashed foot
 
-   Used on the hero recommendation, the three truth cards, the network
-   confidence tiers, and the calculator readout. */
+   It takes a state rather than a number on purpose. See lib/confidence.ts:
+   the numeric version let this site invent a "60" for a recommendation the
+   platform explicitly refuses to score.
 
-const fillColor: Record<ConfidenceState, string> = {
-  backed: "var(--accent)",
-  held: "var(--warning)",
-  unknown: "transparent",
-};
+   `tierPct` is the one numeric escape hatch, for Intelligence Network
+   lessons, whose tier really is a published number. */
 
 export function ConfidenceRail({
-  confidence,
+  state,
+  tierPct,
   label,
   orientation = "vertical",
 }: {
-  /** 0 to 1. Zero means no evidence at all, and the rail stays unlit. */
-  confidence: number;
+  state: EvidenceState;
+  /** Network lessons only, where a published tier genuinely exists. */
+  tierPct?: number;
   label?: string;
   orientation?: "vertical" | "horizontal";
 }) {
-  const state = confidenceState(confidence);
-  const pct = Math.max(0, Math.min(1, confidence)) * 100;
-  const description =
-    label ??
-    (state === "unknown"
-      ? "No evidence yet"
-      : `Evidence ${Math.round(pct)} percent`);
+  const fraction =
+    typeof tierPct === "number"
+      ? Math.max(0, Math.min(1, tierPct / 100))
+      : EVIDENCE_FILL[state];
+  const pct = fraction * 100;
+  const description = label ?? EVIDENCE_LABEL[state];
+  const fill = EVIDENCE_COLOR[state];
 
   if (orientation === "horizontal") {
     return (
@@ -50,7 +56,7 @@ export function ConfidenceRail({
       >
         <motion.span
           className="absolute inset-y-0 left-0 block"
-          style={{ background: fillColor[state] }}
+          style={{ background: fill }}
           initial={{ width: 0 }}
           whileInView={{ width: `${pct}%` }}
           viewport={{ once: true, margin: "-60px" }}
@@ -68,13 +74,13 @@ export function ConfidenceRail({
     >
       <motion.span
         className="absolute inset-x-0 bottom-0 block"
-        style={{ background: fillColor[state] }}
+        style={{ background: fill }}
         initial={{ height: 0 }}
         whileInView={{ height: `${pct}%` }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 1, ease: [0.2, 0.7, 0.2, 1], delay: 0.15 }}
       />
-      {state === "unknown" && (
+      {state === "not_applicable" && (
         <span
           aria-hidden="true"
           className="absolute inset-x-[-1.5px] bottom-0 h-3"

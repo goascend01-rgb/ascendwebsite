@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
+import { pageMetadata, breadcrumbLd } from "@/lib/seo";
 import { PageHero } from "@/components/ui/PageHero";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { PatternTravel } from "@/components/product/PatternTravel";
 import { ConfidenceRail } from "@/components/product/ConfidenceRail";
+import { NetworkMechanics } from "@/components/network/NetworkMechanics";
 import { PrivacyContract } from "@/components/home/PrivacyContract";
 import { CtaSection } from "@/components/home/CtaSection";
 import { NETWORK } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The Intelligence Network",
   description:
-    "Anonymised cross-practice learning that carries principles and cannot carry magnitudes. Nothing publishes below three independent practices and thirty observations, participation is opt in, and withdrawal purges the contribution.",
-  alternates: { canonical: "/network" },
-};
+    "Anonymised cross-practice learning that carries principles and cannot carry magnitudes. Nothing publishes below three independent practices and thirty observations, no identifier of a practice ever enters the pool, and a withdrawn contribution stops counting as current evidence.",
+  path: "/network",
+});
 
 const TIERS = [
   {
@@ -35,20 +37,14 @@ const TIERS = [
 
 const CANNOT_DO_YET = [
   `A pattern needs ${NETWORK.minIndependentPractices} independent practices and ${NETWORK.minObservations} observations before it publishes. Below that it is held, and you are not shown a thin signal wearing confident language.`,
+  "That is why the network is the third layer and not the first. Ascend ships with a Foundation layer of curated guidance and industry research, so on the morning you sign it already has something useful to say about what tends to work. It simply will not pretend that knowledge is something it measured about you.",
   "Everything Ascend does from your own data works on day one and does not wait for anybody else. Reactivation, slot fill, the receptionist, the queue, the brief: all of it runs on your rows.",
   "The network is the part that compounds. In month one it will have little to add. In month twelve, with a cohort behind it, it is the reason Ascend knows something your last vendor could not.",
   "We would rather tell you that now than have you discover it in week three.",
 ];
 
 function Breadcrumbs() {
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-      { "@type": "ListItem", position: 2, name: "Network", item: "/network" },
-    ],
-  };
+  const data = breadcrumbLd([{ name: "Home", path: "/" }, { name: "Network", path: "/network" }]);
   return (
     <script
       type="application/ld+json"
@@ -108,8 +104,9 @@ export default function NetworkPage() {
               <RevealItem key={tier.name} className="h-full">
                 <article className="flex h-full gap-5 rounded-lg border border-border-line bg-surface-1 p-7">
                   <ConfidenceRail
-                    confidence={tier.score / 100}
-                    label={`${tier.name}, ${tier.score}`}
+                    state="measured"
+                    tierPct={tier.score}
+                    label={`${tier.name}, ${tier.score} out of 100`}
                   />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-baseline justify-between gap-3">
@@ -120,7 +117,7 @@ export default function NetworkPage() {
                         {tier.score}
                       </span>
                     </div>
-                    <p className="mt-3.5 text-[0.9rem] leading-[1.7] font-light text-fg-secondary">
+                    <p className="mt-3.5 text-[0.95rem] leading-[1.7] font-light text-fg-secondary">
                       {tier.body}
                     </p>
                   </div>
@@ -132,6 +129,7 @@ export default function NetworkPage() {
       </section>
 
       <PrivacyContract />
+      <NetworkMechanics />
 
       {/* the honest state, which no competitor would write */}
       <section className="border-t border-border-soft py-24 md:py-28">
@@ -177,7 +175,7 @@ export default function NetworkPage() {
                 </p>
               </div>
             </div>
-            <p className="mt-5 max-w-[62ch] text-[0.88rem] leading-[1.7] font-light text-fg-tertiary">
+            <p className="mt-5 max-w-[62ch] text-[0.93rem] leading-[1.7] font-light text-fg-tertiary">
               Both are policy constants in the platform rather than editorial
               judgement, which means nobody can decide to publish something early
               because it would look good.

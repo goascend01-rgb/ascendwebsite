@@ -48,7 +48,7 @@ export function Faq({
                   <span className="absolute top-0 left-1/2 h-full w-px -translate-x-1/2 bg-accent transition-transform duration-300 group-open:scale-y-0" />
                 </span>
               </summary>
-              <p className="max-w-[68ch] px-6 pb-6 text-[0.93rem] leading-[1.72] font-light text-fg-secondary">
+              <p className="max-w-[68ch] px-6 pb-6 text-[0.98rem] leading-[1.72] font-light text-fg-secondary">
                 {item.a}
               </p>
             </details>

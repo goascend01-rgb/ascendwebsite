@@ -49,7 +49,7 @@ export function NetworkSection() {
         <div className="mt-20 border-t border-border-line pt-14">
           <Reveal>
             <p className="label-mono">
-              {"// How a pattern travels between practices"}
+              {"// The privacy contract, and what the Network cannot do yet"}
             </p>
           </Reveal>
           <Reveal delay={0.08}>
@@ -68,7 +68,7 @@ export function NetworkSection() {
 
         <Reveal delay={0.1}>
           <div className="mt-16 flex flex-col gap-6 border-t border-border-line pt-10 sm:flex-row sm:items-center sm:justify-between">
-            <p className="max-w-[46ch] text-[0.9rem] leading-[1.65] font-light text-fg-tertiary">
+            <p className="max-w-[46ch] text-[0.95rem] leading-[1.65] font-light text-fg-tertiary">
               Nothing publishes until at least{" "}
               <span className="text-fg">
                 {NETWORK.minIndependentPractices} independent practices
@@ -88,7 +88,7 @@ export function NetworkSection() {
                 aria-hidden="true"
                 className="transition-transform duration-300 group-hover:translate-x-1"
               >
-                →
+                <span aria-hidden="true">→</span>
               </span>
             </Link>
           </div>

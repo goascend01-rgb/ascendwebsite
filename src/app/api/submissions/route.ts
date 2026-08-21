@@ -86,8 +86,28 @@ export async function POST(request: Request) {
   const tooFast =
     Number.isFinite(startedAt) && Date.now() - startedAt < MIN_FILL_MS;
 
-  if (honeypot.length > 0 || tooFast) {
+  if (honeypot.length > 0) {
+    /* Nothing human fills a field it cannot see. Answer as though it worked:
+       naming the trap only teaches the next script how to pass it. */
     return NextResponse.json({ ok: true, via: [] satisfies string[] });
+  }
+
+  if (tooFast) {
+    /* This one CAN catch a person: a returning visitor with autofill, or a
+       tab restored mid-session. Reporting success would drop a real lead in
+       silence, which is the failure this site exists to argue against. Log it
+       so it is recoverable, and ask them to send it again. */
+    console.warn(
+      `[forms] ${kind} submitted ${Date.now() - startedAt}ms after load, below the ${MIN_FILL_MS}ms floor`
+    );
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "That arrived faster than we can accept. Nothing was sent, so please submit it once more.",
+      },
+      { status: 429 }
+    );
   }
 
   if (rateLimited(clientKey(request))) {

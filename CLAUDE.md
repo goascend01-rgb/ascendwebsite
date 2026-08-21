@@ -52,6 +52,80 @@ Two offerings under one brand. **They are not equal and the site must not preten
 
 ---
 
+## Claims corrected on 2026-08-21, and why they are easy to get wrong again
+
+A seven-lens review verified against the platform source found these. Each one
+had been written in good faith from a plausible-sounding summary rather than
+from the code. **Read the module, not the roadmap, not a doc, not a memory.**
+
+| The site said | The code says | Where |
+| --- | --- | --- |
+| "Participation is opt in" | `isNetworkEligible` returns true unless explicitly excluded. Contribution is **opt-out**, and there is no customer-facing control. | `network/collect.ts` |
+| "Withdraw and everything is purged" | "MARKED, NEVER DELETED... a withdrawn contribution decays. It never zeroes." | `network/standing.ts` |
+| Four subprocessors touch patient data | **Five.** Meta transports Instagram Direct and Messenger, which are two of the five channels the site sells. | `apps/api/src/meta.ts` |
+| Hero card: "Confidence · Established · 60" | "Null on deterministic recs, which have no honest tier, surfacing one there would fabricate it." | `decisions.ts` |
+| "Excluded: patients who opted out of SMS" | The win-back query filters appointment status only. Consent is enforced at **send**, not in the count. | `revenueRecovery.ts` |
+| "Clinical questions routed to a human before any model reads it" | Routed to the **full receptionist tier**, which is a model, and is the only tier that can escalate. | `chatRouter.ts` |
+| "Every recommendation carries five fields" | Only pattern-derived ones. Deterministic detectors do not. | `decisions.ts` |
+| Calculator "measures your reactivation rate and fill rate" | Neither is measured back. Value per visit is. | |
+
+### The evidence rail takes a STATE, never a number
+`ConfidenceRail` used to accept `confidence={0.6}`, and those numbers were
+invented by this website. It now takes one of the product's four real metric
+states: `measured`, `estimated`, `unknown`, `not_applicable`. The only numeric
+escape hatch is `tierPct`, for Intelligence Network lessons, whose tier is a
+genuine published constant. **Do not add a numeric confidence back.**
+
+### Contrast is a calculation, not a judgement
+All four text tokens clear WCAG AA body text (4.5:1) on the darkest surface
+they sit on. `--fg-muted` was at 2.9:1 while carrying tier install prices and
+the calculator's "Not applicable" state. If you change a token, compute the
+ratio.
+
+### Two traps that wasted real time here
+1. **A stale `next start` serves a broken build.** After `npm run build`,
+   restart the server on a fresh port. A server whose `.next` was replaced
+   underneath it serves 404 CSS and unstyled pages, which reads exactly like a
+   catastrophic styling regression and is not one.
+2. **A guard that can silently see nothing is worse than no guard.**
+   `check-tokens.mjs` inspected one token out of five for weeks and printed
+   "All founder tokens resolved". It now cross-checks itself against the
+   `TokenId` union and fails if it cannot account for every token.
+
+## Where the capability content comes from
+
+`src/lib/capabilities.ts` carries the second half of the product: the daily loop, the three
+intelligence layers, Creative Studio, acquisition economics, the practice record, the briefings,
+and the Network mechanics. **Every claim in it was read out of the platform repository
+(`../Ascend Platform`) module by module on 2026-08-21.** Before adding or editing a capability
+claim, go and read the module, not the roadmap: the roadmap describes intent and the code
+describes what ships.
+
+Verified limits that must survive any future edit, because each one is a place the site would
+otherwise drift into a lie:
+
+| Capability | The real limit |
+| --- | --- |
+| Market research | Competitor snapshots are **pasted in by staff**. Ascend does not scrape. Staleness is labelled rather than hidden. |
+| Acquisition | Spend is **entered manually**, not synced from an ad platform. Revenue figures are withheld below the revenue-capture floor rather than estimated. |
+| Practice record | A clinical and financial record, **not** invoicing or payments. Ascend does not process or chase money. |
+| Post citations | A citation naming a case, review or recommendation must match a real row or it is dropped. Narrative citations are marked unverified. The two are never shown as equivalent. |
+| Foundation layer | A prior, not a finding. It may never say it observed something in this practice. |
+
+### Names that stay off the site
+Founder-directed 2026-08-21. The internal product names are not marketing copy:
+
+- **Command Center** → "the morning queue", "the queue"
+- **Board Meeting** → "the weekly review", "a written review each week"
+
+Describe what they do. Both are real and both should be prominent; only the labels are banned.
+
+### The Foundation layer is the answer to "the network is empty on day one"
+Do not let a future edit soften the Network's honest baseline without also carrying Foundation
+beside it. The honest position is not "the network needs time", it is "two of the three layers
+work on day one and the third compounds". Losing half of that makes the product sound weaker
+than it is.
+
 ## Founder tokens
 
 Live in `src/lib/tokens.ts`. Four of five are resolved; **`FOUNDER_STORY` is the only one still `null`**, and it blocks the production build.
@@ -153,7 +227,7 @@ Logo and wordmark live in `brand guidelines/` and `public/brand/`. Use them; do 
 
 ## Forms
 
-Both forms post to `POST /api/submissions`. There is one endpoint, one validator (`src/lib/forms/schema.ts`) and one delivery layer (`src/lib/forms/delivery.ts`) with two adapters, picked by environment variable:
+All three forms post to `POST /api/submissions`. A staffing enquiry is a `staffing-brief` and lands on `/staffing/contact`: it must never be filed as a leak report, which asks a platform buyer for twelve months of appointment history and means nothing to a practice that wants a receptionist. There is one endpoint, one validator (`src/lib/forms/schema.ts`) and one delivery layer (`src/lib/forms/delivery.ts`) with two adapters, picked by environment variable:
 
 - **Email:** `RESEND_API_KEY` + `FORM_TO_EMAIL` + `FORM_FROM_EMAIL`
 - **Webhook:** `FORM_WEBHOOK_URL` (+ optional `FORM_WEBHOOK_TOKEN`) for Zapier, Make, n8n, Slack or a CRM

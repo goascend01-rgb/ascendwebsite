@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata, breadcrumbLd } from "@/lib/seo";
 import { PageHero } from "@/components/ui/PageHero";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
@@ -7,27 +8,15 @@ import { TrustLadder } from "@/components/home/TrustLadder";
 import { CtaSection } from "@/components/home/CtaSection";
 import { WHAT_WE_NEED } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "How it works",
   description:
     "Thirty days from signature to an operator that knows your practice, and about four hours of your time spread across the month. Then you decide, domain by domain, what it may do on its own.",
-  alternates: { canonical: "/how-it-works" },
-};
+  path: "/how-it-works",
+});
 
 function Breadcrumbs() {
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "How it works",
-        item: "/how-it-works",
-      },
-    ],
-  };
+  const data = breadcrumbLd([{ name: "Home", path: "/" }, { name: "How it works", path: "/how-it-works" }]);
   return (
     <script
       type="application/ld+json"
@@ -46,12 +35,12 @@ export default function HowItWorksPage() {
         title={
           <>Thirty days from signature to an operator that knows your practice.</>
         }
-        lead="We do the work. There is no implementation project, and no new job for the person at your front desk who is already the busiest."
+        lead="Four hours of your time, spread across the month, and we do the rest."
       />
 
       <section className="border-t border-border-soft py-20 md:py-24">
         <div className="shell">
-          <InstallTimeline />
+          <InstallTimeline headingLevel={2} />
         </div>
       </section>
 
@@ -73,7 +62,7 @@ export default function HowItWorksPage() {
                       <span className="font-mono text-[0.74rem] tabular-nums tracking-[0.12em] text-accent">
                         {item.index}
                       </span>
-                      <p className="text-[0.95rem] leading-[1.7] font-light text-fg-secondary">
+                      <p className="text-[1rem] leading-[1.7] font-light text-fg-secondary">
                         {item.body}
                       </p>
                     </div>
@@ -82,7 +71,7 @@ export default function HowItWorksPage() {
               </RevealGroup>
 
               <Reveal delay={0.12}>
-                <p className="mt-8 max-w-[58ch] text-[0.94rem] leading-[1.72] font-light text-fg-tertiary">
+                <p className="mt-8 max-w-[58ch] text-[0.99rem] leading-[1.72] font-light text-fg-tertiary">
                   That is the whole implementation. There is no project, and there
                   is no new job for the person at your front desk who is already
                   busiest.

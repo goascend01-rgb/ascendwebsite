@@ -80,8 +80,9 @@ export function LeakReportForm() {
             <TextInput id="phone" name="phone" type="tel" autoComplete="tel" />
           </Field>
 
-          <Field label="Number of locations">
+          <Field label="Number of locations" htmlFor="locations">
             <Select
+              label="Number of locations"
               id="locations"
               options={LOCATIONS}
               value={locations}

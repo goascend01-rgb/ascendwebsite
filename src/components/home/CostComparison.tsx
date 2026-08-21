@@ -24,7 +24,7 @@ export function CostComparison() {
             {COST_COMPARISON.map((row) => (
               <RevealItem key={row.item}>
                 <div className="flex items-baseline justify-between gap-6 border-b border-border-soft bg-surface-1/40 px-6 py-4">
-                  <p className="text-[0.94rem] leading-snug font-light text-fg-secondary">
+                  <p className="text-[0.99rem] leading-snug font-light text-fg-secondary">
                     {row.item}
                   </p>
                   <p className="shrink-0 font-mono text-[0.84rem] tabular-nums text-fg-tertiary">
@@ -42,7 +42,7 @@ export function CostComparison() {
               <p className="font-mono text-[0.7rem] tracking-[0.18em] text-fg uppercase">
                 Combined
               </p>
-              <p className="shrink-0 font-mono text-[0.95rem] tabular-nums text-fg">
+              <p className="shrink-0 font-mono text-[1rem] tabular-nums text-fg">
                 {money(low)}
                 <span className="mx-1.5 text-fg-muted">to</span>
                 {money(high)}
@@ -72,7 +72,7 @@ export function CostComparison() {
         </div>
 
         <Reveal delay={0.12}>
-          <p className="mt-8 max-w-[68ch] text-[0.92rem] leading-[1.72] font-light text-fg-tertiary">
+          <p className="mt-8 max-w-[68ch] text-[0.97rem] leading-[1.72] font-light text-fg-tertiary">
             Ranges are typical published US market rates, for comparison rather
             than measured. The only number that matters is what your stack costs,
             and we will price against yours on the call. If Ascend does not beat

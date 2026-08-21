@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { ConfidenceRail } from "./ConfidenceRail";
 
-/* A real Command Center recommendation, rendered in the site's own design
+/* A real recommendation from the morning queue, rendered in the site's own design
    language. Not a mock dashboard with invented revenue: this is the actual
    shape the product produces, which is the most persuasive object Ascend
    owns.
@@ -24,7 +24,7 @@ export function RecommendationCard({ delay = 0 }: { delay?: number }) {
         transition={{ duration: 0.7, ease, delay }}
         className="flex items-center justify-between px-1 pb-3"
       >
-        <span className="label-mono">{"// Command Center"}</span>
+        <span className="label-mono">{"// This morning"}</span>
         <span className="flex items-center gap-2 font-mono text-[0.62rem] tracking-[0.16em] text-fg-tertiary uppercase">
           <span className="h-1 w-1 rounded-full bg-accent" />
           1 of 4 waiting
@@ -37,7 +37,7 @@ export function RecommendationCard({ delay = 0 }: { delay?: number }) {
         transition={{ duration: 0.9, ease, delay: delay + 0.08 }}
         className="relative flex gap-5 rounded-lg border border-border-line bg-surface-1 p-6 shadow-[0_40px_90px_-50px_rgba(0,0,0,0.9)]"
       >
-        <ConfidenceRail confidence={0.6} label="Evidence 60 percent, established" />
+        <ConfidenceRail state="estimated" />
 
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2.5">
@@ -50,11 +50,15 @@ export function RecommendationCard({ delay = 0 }: { delay?: number }) {
             </span>
           </div>
 
-          <h3 className="mt-3.5 font-display text-[1.06rem] leading-snug font-medium text-fg">
+          {/* Content of the figure, not a document heading: making this an
+              h3 put a phantom level between the page h1 and the first real
+              section, which is a heading skip for anyone navigating by
+              structure. */}
+          <p className="mt-3.5 font-display text-[1.06rem] leading-snug font-medium text-fg">
             Win back 64 patients who slipped away
-          </h3>
+          </p>
 
-          <p className="mt-3 text-[0.87rem] leading-[1.65] font-light text-fg-secondary">
+          <p className="mt-3 text-[0.92rem] leading-[1.65] font-light text-fg-secondary">
             64 patients cancelled or no-showed in the last 3 months and never
             rebooked. A win-back campaign could recover an estimated $3,584 (at a
             20% return rate).
@@ -66,7 +70,7 @@ export function RecommendationCard({ delay = 0 }: { delay?: number }) {
             {[
               ["Source", "Your visit history, last 3 months"],
               ["Assumed", "20% return rate"],
-              ["Excluded", "Patients who opted out of SMS"],
+              ["Excluded", "Anyone with a future visit already booked"],
             ].map(([k, v]) => (
               <div key={k} className="flex gap-3 text-[0.72rem]">
                 <dt className="w-[4.6rem] shrink-0 font-mono tracking-[0.1em] text-fg-muted uppercase">
@@ -77,19 +81,14 @@ export function RecommendationCard({ delay = 0 }: { delay?: number }) {
             ))}
           </dl>
 
-          <div className="mt-5">
-            <div className="flex items-center justify-between font-mono text-[0.62rem] tracking-[0.14em] text-fg-tertiary uppercase">
-              <span>Confidence</span>
-              <span className="text-accent">Established · 60</span>
-            </div>
-            <div className="mt-2">
-              <ConfidenceRail
-                confidence={0.6}
-                orientation="horizontal"
-                label="Confidence established, 60"
-              />
-            </div>
-          </div>
+          <p className="mt-5 border-t border-border-soft pt-4 text-[0.78rem] leading-[1.6] font-light text-fg-tertiary">
+            <span className="font-mono text-[0.58rem] tracking-[0.18em] text-fg-muted uppercase">
+              No confidence score
+            </span>
+            <br />
+            This is a count from your own rows, not a pattern. A confidence tier
+            here would be invented, so there is not one.
+          </p>
 
           <div aria-hidden="true" className="mt-6 flex gap-2.5">
             <span className="inline-flex flex-1 items-center justify-center rounded-sm bg-accent px-4 py-2.5 font-mono text-[0.72rem] font-bold tracking-[0.04em] text-on-accent">

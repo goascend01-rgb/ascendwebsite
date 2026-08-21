@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import {
   LegalLayout,
@@ -13,13 +14,13 @@ import {
 import { TokenText } from "@/components/ui/Token";
 import { SITE, SUBPROCESSORS } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Privacy policy",
   description:
     "How Ascend handles data, in two distinct roles: as controller for visitors and account holders, and as processor and business associate for patient data a practice puts into the platform.",
-  alternates: { canonical: "/legal/privacy" },
+  path: "/legal/privacy",
   robots: { index: true, follow: true },
-};
+});
 
 const UPDATED = "20 August 2026";
 
@@ -217,8 +218,8 @@ export default function PrivacyPage() {
 
       <LegalSection id="subprocessors" index={7} heading="Subprocessors">
         <P>
-          Only the first four subprocessors below may process patient data. The rest
-          are architected so that patient data never reaches them.
+          Only the subprocessors marked below may process patient data. The rest are
+          architected so that patient data never reaches them.
         </P>
         <SubprocessorTable rows={SUBPROCESSORS} />
         <P>
@@ -274,8 +275,10 @@ export default function PrivacyPage() {
         </P>
         <H3>If you hold an Ascend account</H3>
         <P>
-          You can access, correct, export and delete your data from the dashboard, or
-          by emailing us. We respond within 30 days.
+          You can ask us to access, correct, export or delete your data by emailing
+          us, and we respond within 30 days. This is not yet a self-serve action
+          inside the dashboard, and we would rather say so than point you at a
+          button that is not there.
         </P>
       </LegalSection>
 

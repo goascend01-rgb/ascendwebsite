@@ -36,13 +36,13 @@ function Field({
       <div className="flex items-baseline justify-between gap-4">
         <label
           htmlFor={id}
-          className="text-[0.87rem] leading-snug font-light text-fg-secondary transition-colors duration-300 group-focus-within:text-fg"
+          className="text-[0.92rem] leading-snug font-light text-fg-secondary transition-colors duration-300 group-focus-within:text-fg"
         >
           {field.label}
         </label>
         <output
           htmlFor={id}
-          className="shrink-0 font-mono text-[0.88rem] tabular-nums text-fg"
+          className="shrink-0 font-mono text-[0.93rem] tabular-nums text-fg"
         >
           {formatField(field, value)}
         </output>
@@ -54,9 +54,12 @@ function Field({
         max={field.max}
         step={field.step}
         value={value}
+        /* Without this a rate slider is announced as "0.08" and the money one
+           as "280". The visible <output> already shows 8% and $280, and the
+           two should not disagree. */
+        aria-valuetext={formatField(field, value)}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="mt-3 h-1 w-full cursor-pointer appearance-none rounded-full bg-border-line accent-accent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-4"
-        style={{ accentColor: "var(--accent)" }}
+        className="mt-2 w-full focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-4"
       />
     </div>
   );
@@ -142,7 +145,7 @@ export function Calculator() {
                 {result.rows.map((row) => (
                   <li key={row.id} className="bg-surface-1 px-5 py-4">
                     <div className="flex items-baseline justify-between gap-4">
-                      <p className="text-[0.88rem] leading-snug font-light text-fg-secondary">
+                      <p className="text-[0.93rem] leading-snug font-light text-fg-secondary">
                         {row.label}
                       </p>
                       {row.state === "not_applicable" ? (
@@ -150,7 +153,7 @@ export function Calculator() {
                           Not applicable
                         </span>
                       ) : (
-                        <span className="shrink-0 font-mono text-[0.95rem] tabular-nums text-fg">
+                        <span className="shrink-0 font-mono text-[1rem] tabular-nums text-fg">
                           {row.visits.toLocaleString()}
                           <span className="ml-1.5 text-[0.68rem] tracking-[0.1em] text-fg-muted uppercase">
                             visits
@@ -222,14 +225,16 @@ export function Calculator() {
 
               {/* The assumptions live beside the number rather than under the
                   fold, because the number means nothing without them. */}
-              <div className="mt-auto space-y-4 border-t border-border-soft pt-7 text-[0.88rem] leading-[1.7] font-light text-fg-secondary">
+              <div className="mt-auto space-y-4 border-t border-border-soft pt-7 text-[0.93rem] leading-[1.7] font-light text-fg-secondary">
                 <p>
                   Every rate on the left is a placeholder, deliberately. Ascend does
                   not run on assumed rates.
                 </p>
                 <p>
-                  Once your history is imported it measures your reactivation rate,
-                  your fill rate and your value per visit, and replaces all of them.
+                  Once your history is imported, the ones it can measure it
+                  measures. Your value per visit comes straight from your own
+                  records. The rest stay visible as the assumptions they are,
+                  rather than hardening into numbers nobody checked.
                 </p>
                 <p className="text-fg-tertiary">
                   Where it has no evidence yet it says not yet measurable rather
@@ -243,7 +248,7 @@ export function Calculator() {
 
         <Reveal delay={0.12}>
           <div className="mt-5 flex flex-col gap-5 rounded-lg border border-border-line bg-bg p-7 sm:flex-row sm:items-center sm:justify-between md:p-8">
-            <p className="max-w-[52ch] text-[0.95rem] leading-[1.7] font-light text-fg-secondary">
+            <p className="max-w-[52ch] text-[1rem] leading-[1.7] font-light text-fg-secondary">
               That is a worked example. The one that matters is yours, built from
               your last twelve months.
             </p>
@@ -253,7 +258,7 @@ export function Calculator() {
               size="lg"
               className="w-fit shrink-0"
             >
-              Run this on my real numbers →
+              Run this on my real numbers <span aria-hidden="true">→</span>
             </ButtonLink>
           </div>
         </Reveal>

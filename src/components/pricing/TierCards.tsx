@@ -20,7 +20,7 @@ function Line({ text, included }: { text: string; included: boolean }) {
         }`}
       />
       <span
-        className={`text-[0.88rem] leading-[1.6] font-light ${
+        className={`text-[0.93rem] leading-[1.6] font-light ${
           included ? "text-fg-secondary" : "text-fg-muted"
         }`}
       >
@@ -31,7 +31,17 @@ function Line({ text, included }: { text: string; included: boolean }) {
   );
 }
 
-export function TierCards({ condensed = false }: { condensed?: boolean }) {
+export function TierCards({
+  condensed = false,
+  headingLevel = 3,
+}: {
+  condensed?: boolean;
+  /** 2 on /pricing, where a tier is a top level subsection of the page h1.
+      3 on the homepage, where the preview already sits under a section h2. */
+  headingLevel?: 2 | 3;
+}) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
+
   return (
     <RevealGroup className="grid gap-5 lg:grid-cols-3">
       {TIERS.map((tier) => {
@@ -56,9 +66,9 @@ export function TierCards({ condensed = false }: { condensed?: boolean }) {
               <p className="font-mono text-[0.6rem] tracking-[0.18em] text-fg-tertiary uppercase">
                 {tier.eyebrow}
               </p>
-              <h3 className="mt-4 font-display text-[1.6rem] font-medium text-fg">
+              <Heading className="mt-4 font-display text-[1.6rem] font-medium text-fg">
                 {tier.name}
-              </h3>
+              </Heading>
 
               <p className="mt-5 flex items-baseline gap-2">
                 <span

@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "@/components/ui/PageHero";
 import { Reveal } from "@/components/ui/Reveal";
 import { LeakReportForm } from "@/components/forms/LeakReportForm";
 import { LEAKS, SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Book the 20-minute call",
   description:
     "Send us your last twelve months and we will run your own numbers through the four leaks, with every assumption named and arguable. If the number is not big enough to justify the fee, we will tell you on the call.",
-  alternates: { canonical: "/contact" },
-};
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (
@@ -31,7 +32,7 @@ export default function ContactPage() {
               <Reveal delay={0.1}>
                 <div className="rounded-lg border border-border-line bg-surface-1 p-7">
                   <h2 className="label-mono">{"// What happens next"}</h2>
-                  <p className="mt-6 text-[0.93rem] leading-[1.7] font-light text-fg-secondary">
+                  <p className="mt-6 text-[0.98rem] leading-[1.7] font-light text-fg-secondary">
                     We reply within one business day with a time. Before the call
                     we ask for an export of your last twelve months of appointments
                     if you have one. If you do not, the call still works and we use
@@ -49,7 +50,7 @@ export default function ContactPage() {
                         <span className="mt-[2px] font-mono text-[0.7rem] tabular-nums text-fg-muted">
                           {leak.index}
                         </span>
-                        <span className="text-[0.89rem] leading-[1.55] font-light text-fg-secondary">
+                        <span className="text-[0.94rem] leading-[1.55] font-light text-fg-secondary">
                           {leak.title}
                         </span>
                       </li>

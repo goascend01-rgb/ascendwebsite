@@ -39,7 +39,7 @@ export function TrustLadder() {
                 <h3 className="mt-3 font-display text-[1.24rem] font-medium text-fg">
                   {rung.title}
                 </h3>
-                <p className="mt-4 text-[0.92rem] leading-[1.7] font-light text-fg-secondary">
+                <p className="mt-4 text-[0.97rem] leading-[1.7] font-light text-fg-secondary">
                   {rung.body}
                 </p>
               </article>
@@ -50,11 +50,12 @@ export function TrustLadder() {
         {/* the five fields, which are real product structure */}
         <Reveal delay={0.12}>
           <div className="mt-12 rounded-lg border border-border-line bg-bg p-7 md:p-8">
-            <p className="max-w-[64ch] text-[0.94rem] leading-[1.68] font-light text-fg-secondary">
-              Every recommendation carries five fields, and it does not ship
-              without all five.
+            <p className="max-w-[64ch] text-[0.99rem] leading-[1.68] font-light text-fg-secondary">
+              Where a recommendation comes from a pattern rather than a plain
+              count, it carries five fields, and it does not ship without all
+              five.
             </p>
-            <ul className="mt-7 grid gap-px overflow-hidden rounded-md border border-border-soft bg-border-soft sm:grid-cols-2 lg:grid-cols-5">
+            <ul className="mt-7 grid gap-px overflow-hidden rounded-md border border-border-soft bg-border-soft lg:grid-cols-5">
               {RECOMMENDATION_FIELDS.map((f) => (
                 <li key={f.field} className="bg-surface-1 px-4 py-5">
                   <span className="font-mono text-[0.62rem] tracking-[0.16em] text-accent uppercase">

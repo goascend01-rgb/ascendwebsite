@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata, breadcrumbLd } from "@/lib/seo";
 import Link from "next/link";
 import { PageHero } from "@/components/ui/PageHero";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -7,27 +8,21 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { money } from "@/lib/leak";
 import {
   ROLES,
+  PRICE_ITEMS,
   STAFFING_PROCESS,
   STAFFING_FOOTNOTE,
   STAFFING_STATUS,
 } from "@/lib/staffing";
 
-export const metadata: Metadata = {
-  title: "Ascend Staffing",
+export const metadata: Metadata = pageMetadata({
+  title: "Staffing",
   description:
     "Pre-trained remote professionals for independent practices: reception, billing and insurance, coding and scribes. Deployed in days, and you pay only after you hire.",
-  alternates: { canonical: "/staffing" },
-};
+  path: "/staffing",
+});
 
 function Breadcrumbs() {
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-      { "@type": "ListItem", position: 2, name: "Staffing", item: "/staffing" },
-    ],
-  };
+  const data = breadcrumbLd([{ name: "Home", path: "/" }, { name: "Staffing", path: "/staffing" }]);
   return (
     <script
       type="application/ld+json"
@@ -52,8 +47,8 @@ export default function StaffingPage() {
         lead="Pre-trained remote professionals for independent practices. Reception, billing and insurance, coding and scribes. Deployed in days, and you pay only after you hire."
       >
         <div className="flex flex-wrap gap-4">
-          <ButtonLink href="/contact" variant="primary" size="lg">
-            Tell us what you need →
+          <ButtonLink href="/staffing/contact" variant="primary" size="lg">
+            Tell us what you need <span aria-hidden="true">→</span>
           </ButtonLink>
           <ButtonLink href="#roles" variant="ghost" size="lg">
             Browse roles
@@ -78,10 +73,10 @@ export default function StaffingPage() {
                   <h2 className="mt-6 font-display text-[1.2rem] leading-snug font-medium text-fg">
                     {role.name}
                   </h2>
-                  <p className="mt-2 text-[0.9rem] font-medium text-accent">
+                  <p className="mt-2 text-[0.95rem] font-medium text-accent">
                     {role.tagline}
                   </p>
-                  <p className="mt-4 flex-1 text-[0.9rem] leading-[1.68] font-light text-fg-secondary">
+                  <p className="mt-4 flex-1 text-[0.95rem] leading-[1.68] font-light text-fg-secondary">
                     {role.blurb}
                   </p>
 
@@ -95,7 +90,7 @@ export default function StaffingPage() {
                     <p className="mt-2.5 font-mono text-[0.64rem] tracking-[0.1em] text-fg-muted uppercase">
                       Against a typical US in-house cost of {money(role.inHouse)}
                     </p>
-                    <span className="mt-5 inline-flex items-center gap-2 font-mono text-[0.7rem] tracking-[0.08em] text-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <span className="mt-5 inline-flex items-center gap-2 font-mono text-[0.7rem] tracking-[0.08em] text-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
                       View role
                       <span aria-hidden="true">→</span>
                     </span>
@@ -106,9 +101,67 @@ export default function StaffingPage() {
           </RevealGroup>
 
           <Reveal delay={0.12}>
-            <p className="mt-8 max-w-[66ch] text-[0.9rem] leading-[1.72] font-light text-fg-tertiary">
+            <p className="mt-8 max-w-[66ch] text-[0.95rem] leading-[1.72] font-light text-fg-tertiary">
               {STAFFING_FOOTNOTE}
             </p>
+          </Reveal>
+        </div>
+      </section>
+
+
+      {/* The three cards above are the roles most practices ask for first.
+          The bench covers more than that, and a reader looking at three
+          cards will immediately wonder whether three is the whole list. */}
+      <section className="py-20 md:py-24">
+        <div className="shell">
+          <SectionHeader
+            label="// The full rate card"
+            title={<>Six roles, priced the same way.</>}
+            lead="Every one is a trained remote professional working your hours, in your systems. In-house figures are typical published US market rates for the role, for comparison rather than measured."
+          />
+
+          <Reveal delay={0.1}>
+            <div className="mt-14 overflow-x-auto rounded-lg border border-border-line">
+              <table className="w-full min-w-[560px] border-collapse text-left">
+                <thead>
+                  <tr className="bg-surface-1">
+                    <th className="px-6 py-4 font-mono text-[0.64rem] tracking-[0.14em] text-fg-tertiary uppercase">
+                      Role
+                    </th>
+                    <th className="px-6 py-4 font-mono text-[0.64rem] tracking-[0.14em] text-fg-tertiary uppercase">
+                      What they do
+                    </th>
+                    <th className="px-6 py-4 text-right font-mono text-[0.64rem] tracking-[0.14em] text-fg-tertiary uppercase">
+                      Monthly
+                    </th>
+                    <th className="px-6 py-4 text-right font-mono text-[0.64rem] tracking-[0.14em] text-fg-tertiary uppercase">
+                      Typical in-house
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {PRICE_ITEMS.map((item) => (
+                    <tr
+                      key={item.key}
+                      className="border-t border-border-soft transition-colors duration-300 hover:bg-surface-1/60"
+                    >
+                      <td className="px-6 py-4 text-[0.97rem] font-medium text-fg">
+                        {item.name}
+                      </td>
+                      <td className="px-6 py-4 text-[0.93rem] font-light text-fg-secondary">
+                        {item.desc}
+                      </td>
+                      <td className="px-6 py-4 text-right font-mono text-[0.95rem] tabular-nums text-accent">
+                        {money(item.price)}
+                      </td>
+                      <td className="px-6 py-4 text-right font-mono text-[0.9rem] tabular-nums text-fg-muted">
+                        {money(item.inHouse)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -131,7 +184,7 @@ export default function StaffingPage() {
                   <h3 className="mt-5 font-display text-[1.02rem] leading-snug font-medium text-fg">
                     {step.title}
                   </h3>
-                  <p className="mt-3 text-[0.89rem] leading-[1.68] font-light text-fg-secondary">
+                  <p className="mt-3 text-[0.94rem] leading-[1.68] font-light text-fg-secondary">
                     {step.desc}
                   </p>
                 </div>
@@ -188,7 +241,7 @@ export default function StaffingPage() {
                   aria-hidden="true"
                   className="transition-transform duration-300 group-hover:translate-x-1"
                 >
-                  →
+                  <span aria-hidden="true">→</span>
                 </span>
               </span>
             </Link>

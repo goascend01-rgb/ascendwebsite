@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "@/components/ui/PageHero";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
@@ -7,12 +8,12 @@ import { FoundingCohort } from "@/components/home/FoundingCohort";
 import { CtaSection } from "@/components/home/CtaSection";
 import { PRINCIPLES } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
     "Ascend is founder-led and honest about its stage. The principles here are not marketing copy: each one is a rule the software actually enforces, including the one that says we do not sell what we have not built.",
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (
@@ -61,7 +62,7 @@ export default function AboutPage() {
                   <h3 className="font-display text-[1.08rem] leading-snug font-medium text-fg">
                     {principle.title}
                   </h3>
-                  <p className="max-w-[52ch] text-[0.93rem] leading-[1.7] font-light text-fg-secondary">
+                  <p className="max-w-[52ch] text-[0.98rem] leading-[1.7] font-light text-fg-secondary">
                     {principle.body}
                   </p>
                 </article>

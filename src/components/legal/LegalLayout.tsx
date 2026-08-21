@@ -114,7 +114,7 @@ export function LegalSection({
 
 export function P({ children }: { children: ReactNode }) {
   return (
-    <p className="text-[0.95rem] leading-[1.72] font-light text-fg-secondary">
+    <p className="text-[1rem] leading-[1.72] font-light text-fg-secondary">
       {children}
     </p>
   );
@@ -134,7 +134,7 @@ export function UL({ items }: { items: ReactNode[] }) {
       {items.map((item, i) => (
         <li
           key={i}
-          className="flex gap-3 text-[0.95rem] leading-[1.7] font-light text-fg-secondary"
+          className="flex gap-3 text-[1rem] leading-[1.7] font-light text-fg-secondary"
         >
           <span
             aria-hidden="true"
@@ -150,7 +150,7 @@ export function UL({ items }: { items: ReactNode[] }) {
 export function Callout({ children }: { children: ReactNode }) {
   return (
     <div className="rounded-lg border border-border-line bg-surface-1 p-5">
-      <div className="text-[0.9rem] leading-[1.7] font-light text-fg-secondary">
+      <div className="text-[0.95rem] leading-[1.7] font-light text-fg-secondary">
         {children}
       </div>
     </div>
@@ -181,8 +181,8 @@ export function SubprocessorTable({
         <tbody>
           {rows.map((r) => (
             <tr key={r.name} className="border-t border-border-soft">
-              <td className="px-4 py-3 text-[0.88rem] text-fg">{r.name}</td>
-              <td className="px-4 py-3 text-[0.88rem] font-light text-fg-secondary">
+              <td className="px-4 py-3 text-[0.93rem] text-fg">{r.name}</td>
+              <td className="px-4 py-3 text-[0.93rem] font-light text-fg-secondary">
                 {r.purpose}
               </td>
               <td className="px-4 py-3">

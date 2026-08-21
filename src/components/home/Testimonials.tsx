@@ -14,8 +14,8 @@ export function Testimonials() {
     <section className="border-t border-border-soft py-24 md:py-28">
       <div className="shell">
         <SectionHeader
-          label="// From the founding cohort"
-          title={<>What practices say once it is running.</>}
+          label="// What we are building toward"
+          title={<>What we intend a practice to be able to say.</>}
         />
 
         <RevealGroup className="mt-16 grid gap-5 md:grid-cols-3">

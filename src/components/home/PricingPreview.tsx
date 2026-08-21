@@ -29,7 +29,7 @@ export function PricingPreview() {
               aria-hidden="true"
               className="transition-transform duration-300 group-hover:translate-x-1"
             >
-              →
+              <span aria-hidden="true">→</span>
             </span>
           </Link>
         </Reveal>

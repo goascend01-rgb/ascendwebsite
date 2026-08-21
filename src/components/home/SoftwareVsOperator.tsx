@@ -33,10 +33,10 @@ export function SoftwareVsOperator() {
             {SOFTWARE_VS_OPERATOR.map((row) => (
               <RevealItem key={row.software}>
                 <div className="group grid grid-cols-1 border-t border-border-line md:grid-cols-2">
-                  <p className="bg-bg px-6 py-5 text-[0.94rem] leading-[1.6] font-light text-fg-muted transition-colors duration-500 md:border-r md:border-border-line">
+                  <p className="bg-bg px-6 py-5 text-[0.99rem] leading-[1.6] font-light text-fg-muted transition-colors duration-500 md:border-r md:border-border-line">
                     {row.software}
                   </p>
-                  <p className="flex items-start gap-3 bg-surface-1/60 px-6 py-5 text-[0.94rem] leading-[1.6] font-light text-fg transition-colors duration-500 group-hover:bg-surface-1">
+                  <p className="flex items-start gap-3 bg-surface-1/60 px-6 py-5 text-[0.99rem] leading-[1.6] font-light text-fg transition-colors duration-500 group-hover:bg-surface-1">
                     <span
                       aria-hidden="true"
                       className="mt-[0.6rem] h-px w-3 shrink-0 bg-accent opacity-40 transition-opacity duration-500 group-hover:opacity-100"
@@ -50,7 +50,7 @@ export function SoftwareVsOperator() {
         </div>
 
         <Reveal delay={0.1}>
-          <p className="mt-10 max-w-[58ch] text-[0.94rem] leading-[1.7] font-light text-fg-tertiary">
+          <p className="mt-10 max-w-[58ch] text-[0.99rem] leading-[1.7] font-light text-fg-tertiary">
             The number was always correct. The chair was still empty. The unit of
             value is a completed action, not a chart.
           </p>

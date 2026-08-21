@@ -11,7 +11,10 @@
    never a guarantee about what arrives.
    ============================================================== */
 
-export type SubmissionKind = "leak-report" | "talent-application";
+export type SubmissionKind =
+  | "leak-report"
+  | "staffing-brief"
+  | "talent-application";
 
 export type FieldSpec = {
   name: string;
@@ -32,6 +35,17 @@ export const FORM_FIELDS: Record<SubmissionKind, FieldSpec[]> = {
     { name: "stack", label: "What you are using today", required: false, maxLength: 400 },
     { name: "message", label: "Anything else", required: false, maxLength: 4000 },
   ],
+  "staffing-brief": [
+    { name: "name", label: "Your name", required: true, maxLength: 120 },
+    { name: "practice", label: "Practice name", required: true, maxLength: 160 },
+    { name: "email", label: "Email", required: true, maxLength: 200, kind: "email" },
+    { name: "phone", label: "Phone", required: false, maxLength: 60 },
+    { name: "role", label: "Role you need", required: false, maxLength: 120 },
+    { name: "seats", label: "How many people", required: false, maxLength: 40 },
+    { name: "start", label: "When you need them", required: false, maxLength: 80 },
+    { name: "systems", label: "Software they would work in", required: false, maxLength: 400 },
+    { name: "message", label: "Anything else", required: false, maxLength: 4000 },
+  ],
   "talent-application": [
     { name: "name", label: "Full name", required: true, maxLength: 120 },
     { name: "email", label: "Email", required: true, maxLength: 200, kind: "email" },
@@ -47,11 +61,16 @@ export const FORM_FIELDS: Record<SubmissionKind, FieldSpec[]> = {
 
 export const KIND_LABEL: Record<SubmissionKind, string> = {
   "leak-report": "Leak report request",
+  "staffing-brief": "Staffing brief",
   "talent-application": "Talent application",
 };
 
 export function isSubmissionKind(value: unknown): value is SubmissionKind {
-  return value === "leak-report" || value === "talent-application";
+  return (
+    value === "leak-report" ||
+    value === "staffing-brief" ||
+    value === "talent-application"
+  );
 }
 
 /* Deliberately permissive. The job is to reject what cannot possibly be an

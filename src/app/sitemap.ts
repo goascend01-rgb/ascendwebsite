@@ -5,8 +5,6 @@ import { ROLES } from "@/lib/staffing";
 /* The legal pages must be crawlable and reachable without a login: Meta's
    reviewer needs them, and a 404 there fails app review. */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
   const routes: { path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [
     { path: "/", priority: 1, changeFrequency: "weekly" },
     { path: "/platform", priority: 0.9, changeFrequency: "monthly" },
@@ -16,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/contact", priority: 0.8, changeFrequency: "monthly" },
     { path: "/security", priority: 0.7, changeFrequency: "monthly" },
     { path: "/staffing", priority: 0.7, changeFrequency: "monthly" },
+    { path: "/staffing/contact", priority: 0.7, changeFrequency: "monthly" },
     { path: "/about", priority: 0.6, changeFrequency: "monthly" },
     { path: "/apply", priority: 0.5, changeFrequency: "monthly" },
     { path: "/legal/privacy", priority: 0.4, changeFrequency: "yearly" },
@@ -29,9 +28,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly" as const,
   }));
 
+  /* No `lastModified`. A build timestamp on every URL claims each page changed
+     on every deploy, including the legal pages, which teaches a crawler to stop
+     believing the field. Omitting it is more honest than a stamp we do not
+     actually track. */
   return [...routes, ...roleRoutes].map((route) => ({
     url: `${SITE.url}${route.path}`,
-    lastModified: now,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));

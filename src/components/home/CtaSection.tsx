@@ -47,7 +47,7 @@ export function CtaSection() {
 
               <div className="mt-10 flex flex-wrap gap-4">
                 <ButtonLink href="/contact" variant="primary" size="lg">
-                  Book the 20-minute call →
+                  Book the 20-minute call <span aria-hidden="true">→</span>
                 </ButtonLink>
                 <ButtonLink href="/pricing" variant="ghost" size="lg">
                   See pricing

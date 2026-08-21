@@ -11,11 +11,22 @@
   --surface-2:   #131720;   /* raised / hover         */
   --surface-3:   #1a1f29;   /* floating (dropdowns)   */
 
-  /* Text hierarchy — four levels */
-  --fg:          #f3f5f7;   /* primary                */
-  --fg-secondary:#9aa3ad;   /* supporting             */
-  --fg-tertiary: #69727c;   /* metadata               */
-  --fg-muted:    #464d56;   /* disabled / faint       */
+  /* Text hierarchy, four levels.
+     Secondary and tertiary were lifted on 2026-08-21: the audit found
+     supporting copy too low in contrast to read comfortably at light
+     weight on this canvas. The hierarchy is unchanged, every level just
+     sits one step brighter. */
+  --fg:          #f3f5f7;   /* primary    16.4:1 on surface-2 */
+  --fg-secondary:#aab3bd;   /* supporting  8.5:1 */
+  --fg-tertiary: #959ea9;   /* metadata    6.6:1 */
+  --fg-muted:    #7b848f;   /* faintest    4.7:1 */
+
+  /* Every level clears WCAG AA body text (4.5:1) against the darkest
+     surface it is used on. `--fg-muted` used to sit at 2.9:1, which was
+     defensible for a disabled control and not defensible for the things it
+     was actually carrying: tier install prices, the excluded-feature lines,
+     the whole left column of the software comparison, and the calculator's
+     "Not applicable" state. Verified by calculation, not by eye. */
 
   /* Border progression */
   --border-soft:   rgba(255,255,255,.05);
@@ -125,6 +136,60 @@ body {
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover { background: #2a313c; }
+
+/* ---------------------- Range inputs (the calculator) ----------------------
+   `appearance: none` hands the whole control to the author. Chromium still
+   paints a thumb from `accent-color`, which is why this looked fine in one
+   browser, but Firefox and Safari have nothing to fall back on. Painting it
+   explicitly also lets the hit area be a real 24px while the visible track
+   stays a 4px hairline: the element used to be 4px tall, which was the
+   entire grab target. */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: 24px;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 14px;
+  width: 14px;
+  margin-top: -5px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+input[type="range"]:hover::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px var(--accent-dim);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border);
+}
+input[type="range"]::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+}
+input[type="range"]:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px var(--accent-dim);
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

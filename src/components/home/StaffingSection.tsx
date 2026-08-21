@@ -20,7 +20,7 @@ export function StaffingSection() {
               <h2 className="mt-4 font-display text-[1.28rem] leading-snug font-medium text-fg">
                 Some practices need a person, not an operator.
               </h2>
-              <p className="mt-3 max-w-[58ch] text-[0.93rem] leading-[1.7] font-light text-fg-secondary">
+              <p className="mt-3 max-w-[58ch] text-[0.98rem] leading-[1.7] font-light text-fg-secondary">
                 Ascend Staffing places pre-trained remote professionals:{" "}
                 {ROLES.map((r) => r.short.toLowerCase()).join(", ")}. Deployed in
                 days, and you pay only after you hire.
@@ -33,7 +33,7 @@ export function StaffingSection() {
                 aria-hidden="true"
                 className="transition-transform duration-300 group-hover:translate-x-1"
               >
-                →
+                <span aria-hidden="true">→</span>
               </span>
             </span>
           </Link>

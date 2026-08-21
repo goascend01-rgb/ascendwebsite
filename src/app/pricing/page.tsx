@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "@/components/ui/PageHero";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Faq } from "@/components/ui/Faq";
@@ -10,12 +11,12 @@ import { Protection } from "@/components/home/Protection";
 import { CtaSection } from "@/components/home/CtaSection";
 import { PRICING_FAQ } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Pricing",
   description:
     "Three tiers from $697 to $4,997 a month. The difference is how much of the running you do. Annual is two months free, thirty days notice, no exit fee, and no money-back guarantee: a ninety day working commitment instead.",
-  alternates: { canonical: "/pricing" },
-};
+  path: "/pricing",
+});
 
 export default function PricingPage() {
   return (
@@ -28,7 +29,7 @@ export default function PricingPage() {
 
       <section className="pb-8">
         <div className="shell">
-          <TierCards />
+          <TierCards headingLevel={2} />
         </div>
       </section>
 

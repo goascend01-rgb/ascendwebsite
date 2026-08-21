@@ -1,26 +1,37 @@
 import type { Metadata } from "next";
+import { pageMetadata, breadcrumbLd } from "@/lib/seo";
 import { PageHero } from "@/components/ui/PageHero";
 import { Reveal } from "@/components/ui/Reveal";
 import { TrustLadder } from "@/components/home/TrustLadder";
 import { CtaSection } from "@/components/home/CtaSection";
+import { CreativeStudio } from "@/components/platform/CreativeStudio";
+import { Acquisition } from "@/components/platform/Acquisition";
+import { PracticeRecords } from "@/components/platform/PracticeRecords";
+import { Briefings } from "@/components/platform/Briefings";
+import { ModuleInventory } from "@/components/platform/ModuleInventory";
+import { WhereItStops } from "@/components/platform/WhereItStops";
 import { DOMAINS } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The platform",
   description:
-    "Six things Ascend does every day: front desk across chat, SMS, WhatsApp, Instagram and Messenger, slot fill, patient reactivation, reputation, content and one ranked queue. Each described exactly as it works, including where it stops.",
-  alternates: { canonical: "/platform" },
-};
+    "Everything Ascend runs: the front desk across five channels, slot fill, patient reactivation, reputation, Creative Studio, acquisition economics, the clinical record, and the briefings that tell you what matters. Each described exactly as it works, including where it stops.",
+  path: "/platform",
+});
+
+/* The jump index covers the deep sections as well as the six domains,
+   because this page is now long enough that a buyer arriving for one
+   specific thing should not have to scroll past five others to find it. */
+const EXTRA_SECTIONS = [
+  { id: "creative-studio", label: "Creative Studio" },
+  { id: "acquisition", label: "Acquisition" },
+  { id: "records", label: "The record" },
+  { id: "briefings", label: "What it tells you" },
+  { id: "everything", label: "Everything" },
+];
 
 function Breadcrumbs() {
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-      { "@type": "ListItem", position: 2, name: "Platform", item: "/platform" },
-    ],
-  };
+  const data = breadcrumbLd([{ name: "Home", path: "/" }, { name: "Platform", path: "/platform" }]);
   return (
     <script
       type="application/ld+json"
@@ -37,10 +48,9 @@ export default function PlatformPage() {
       <PageHero
         label="// The platform"
         title={<>An operator, not an inbox.</>}
-        lead="Six things Ascend does every day. Each one is described here exactly as it works, including where it stops."
+        lead="Six things Ascend does every day, and then the four that most people do not find out about until they are already running it. Each one is described here exactly as it works, including where it stops."
       >
-        {/* jump index: six is enough to need one */}
-        <nav aria-label="The six domains">
+        <nav aria-label="Sections of this page">
           <ul className="flex flex-wrap gap-2">
             {DOMAINS.map((d, i) => (
               <li key={d.id}>
@@ -52,6 +62,16 @@ export default function PlatformPage() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   {d.eyebrow}
+                </a>
+              </li>
+            ))}
+            {EXTRA_SECTIONS.map((s) => (
+              <li key={s.id}>
+                <a
+                  href={`#${s.id}`}
+                  className="inline-flex items-center rounded-sm border border-accent/30 bg-accent-dim px-3.5 py-2 font-mono text-[0.66rem] tracking-[0.14em] text-accent uppercase transition-colors duration-300 hover:border-accent"
+                >
+                  {s.label}
                 </a>
               </li>
             ))}
@@ -85,7 +105,7 @@ export default function PlatformPage() {
 
               <div>
                 <Reveal delay={0.08}>
-                  <p className="text-[1.02rem] leading-[1.7] font-light text-fg">
+                  <p className="text-[1.05rem] leading-[1.72] font-light text-fg">
                     {domain.summary}
                   </p>
                 </Reveal>
@@ -93,29 +113,25 @@ export default function PlatformPage() {
                 <div className="mt-8 space-y-5">
                   {domain.detail.map((para, j) => (
                     <Reveal key={para} delay={0.12 + j * 0.05}>
-                      <p className="max-w-[62ch] text-[0.95rem] leading-[1.72] font-light text-fg-secondary">
+                      <p className="max-w-[62ch] text-[1rem] leading-[1.74] font-light text-fg-secondary">
                         {para}
                       </p>
                     </Reveal>
                   ))}
                 </div>
 
-                {/* The honest edge, six times. No competitor's site carries
-                    this block, which is exactly why it is here. */}
-                <Reveal delay={0.2}>
-                  <div className="mt-10 flex flex-col gap-4 rounded-lg border border-border-line bg-surface-1 p-6 sm:flex-row sm:gap-6">
-                    <span className="w-fit shrink-0 rounded-sm border border-border-strong px-2.5 py-1 font-mono text-[0.58rem] tracking-[0.18em] text-fg-muted uppercase">
-                      Where it stops
-                    </span>
-                    <p className="max-w-[54ch] text-[0.92rem] leading-[1.7] font-light text-fg-secondary">
-                      {domain.stops}
-                    </p>
-                  </div>
-                </Reveal>
+                <WhereItStops delay={0.2}>{domain.stops}</WhereItStops>
               </div>
             </div>
           </section>
         ))}
+
+        {/* The four the site never mentioned, at the depth they deserve. */}
+        <CreativeStudio />
+        <Acquisition />
+        <PracticeRecords />
+        <Briefings />
+        <ModuleInventory />
       </div>
 
       <TrustLadder />

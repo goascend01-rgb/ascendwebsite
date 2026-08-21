@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import {
   LegalLayout,
@@ -10,13 +11,13 @@ import {
 } from "@/components/legal/LegalLayout";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "How to delete your data",
   description:
     "Two paths to deletion, because Ascend holds data in two capacities: conversations that belong to the practice you messaged, and accounts that belong to you.",
-  alternates: { canonical: "/legal/data-deletion" },
+  path: "/legal/data-deletion",
   robots: { index: true, follow: true },
-};
+});
 
 const UPDATED = "20 August 2026";
 
@@ -59,7 +60,8 @@ export default function DataDeletionPage() {
         </P>
         <Callout>
           To stop receiving messages immediately, reply STOP to any SMS or WhatsApp
-          message. That takes effect at once and does not require this form.
+          message. That takes effect at once, and you do not need to email us
+          first.
         </Callout>
       </LegalSection>
 
@@ -87,7 +89,7 @@ export default function DataDeletionPage() {
             "Uploaded media.",
             "Clinical records.",
             "Account details.",
-            "If your practice contributed to the Intelligence Network, that contribution is purged as well, including from the published record.",
+            "Intelligence Network contributions are handled differently, and deliberately so. They never contained an identifier of you or of any patient: a contributing practice is recorded only as a one way hash, and only patterns general enough to apply elsewhere are emitted at all. On deletion your account stops contributing and past contributions stop counting as current evidence.",
           ]}
         />
       </LegalSection>

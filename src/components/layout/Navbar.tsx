@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Logo } from "@/components/ui/Logo";
 import { ButtonLink } from "@/components/ui/Button";
@@ -35,6 +35,27 @@ export function Navbar() {
     return () => {
       document.body.style.overflow = "";
     };
+  }, [open]);
+
+  /* The sheet covers the page, so it has to behave like a dialog: Escape
+     closes it, focus moves into it on open and returns to the trigger on
+     close. Without this a keyboard user tabs through a menu they cannot see
+     and lands on links behind the overlay. */
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    const first = sheetRef.current?.querySelector<HTMLElement>("a, button");
+    first?.focus();
+    return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
   const isActive = (href: string) =>
@@ -78,11 +99,12 @@ export function Navbar() {
 
           <div className="hidden md:block">
             <ButtonLink href="/contact" size="sm" variant="ghost">
-              Book the call →
+              Book the call <span aria-hidden="true">→</span>
             </ButtonLink>
           </div>
 
           <button
+            ref={toggleRef}
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
@@ -113,13 +135,17 @@ export function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={sheetRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 bg-bg/95 backdrop-blur-xl md:hidden"
           >
-            <div className="shell flex h-full flex-col justify-center gap-1">
+            <div className="shell flex h-full flex-col justify-center gap-1 overflow-y-auto py-24">
               {NAV.map((item, i) => (
                 <motion.div
                   key={item.href}
@@ -148,7 +174,7 @@ export function Navbar() {
                   size="lg"
                   onClick={() => setOpen(false)}
                 >
-                  Book the 20-minute call →
+                  Book the 20-minute call <span aria-hidden="true">→</span>
                 </ButtonLink>
               </motion.div>
             </div>

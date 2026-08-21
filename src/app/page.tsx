@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Hero } from "@/components/home/Hero";
 import { OpeningQuestion } from "@/components/home/OpeningQuestion";
 import { Leaks } from "@/components/home/Leaks";
+import { EveryDay } from "@/components/home/EveryDay";
 import { ProductTruth } from "@/components/home/ProductTruth";
 import { SoftwareVsOperator } from "@/components/home/SoftwareVsOperator";
 import { PlatformSection } from "@/components/home/PlatformSection";
+import { IntelligenceLayers } from "@/components/home/IntelligenceLayers";
 import { NetworkSection } from "@/components/home/NetworkSection";
 import { PrivacyContract } from "@/components/home/PrivacyContract";
 import { TrustLadder } from "@/components/home/TrustLadder";
@@ -19,12 +22,12 @@ import { StaffingSection } from "@/components/home/StaffingSection";
 import { CtaSection } from "@/components/home/CtaSection";
 import { SITE, TIERS } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "The AI operator for independent practices",
+export const metadata: Metadata = pageMetadata({
+  title: "Ascend · The AI operator for independent practices",
   description:
     "Ascend answers every enquiry across chat, SMS, WhatsApp, Instagram and Messenger, refills the chair a cancellation empties, brings back patients who quietly stopped coming, and shows its reasoning before it acts. Assisted by default.",
-  alternates: { canonical: "/" },
-};
+  path: "/",
+});
 
 /* Organization and SoftwareApplication only. No AggregateRating field: an
    invented rating is both a lie and a Google penalty risk, so the property
@@ -81,9 +84,11 @@ export default function HomePage() {
       <Hero />
       <OpeningQuestion />
       <Leaks />
+      <EveryDay />
       <ProductTruth />
       <SoftwareVsOperator />
       <PlatformSection />
+      <IntelligenceLayers />
       <NetworkSection />
       <PrivacyContract />
       <TrustLadder />

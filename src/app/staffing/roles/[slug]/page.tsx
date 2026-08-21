@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ROLES, STAFFING_PROCESS, STAFFING_FOOTNOTE } from "@/lib/staffing";
+import { breadcrumbLd } from "@/lib/seo";
+import {
+  ROLES,
+  STAFFING_PROCESS,
+  STAFFING_FOOTNOTE,
+  STAFFING_STATUS,
+} from "@/lib/staffing";
 import { money } from "@/lib/leak";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
@@ -39,20 +45,11 @@ export default async function RolePage({
   const savingsPct = Math.round((savings / role.inHouse) * 100);
   const others = ROLES.filter((r) => r.slug !== role.slug);
 
-  const breadcrumbs = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-      { "@type": "ListItem", position: 2, name: "Staffing", item: "/staffing" },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: role.name,
-        item: `/staffing/roles/${role.slug}`,
-      },
-    ],
-  };
+  const breadcrumbs = breadcrumbLd([
+    { name: "Home", path: "/" },
+    { name: "Staffing", path: "/staffing" },
+    { name: role.name, path: `/staffing/roles/${role.slug}` },
+  ]);
 
   return (
     <article className="pt-[128px] md:pt-[164px]">
@@ -95,8 +92,8 @@ export default async function RolePage({
             </Reveal>
             <Reveal delay={0.26}>
               <div className="mt-10 flex flex-wrap gap-4">
-                <ButtonLink href="/contact" variant="primary" size="lg">
-                  Tell us what you need →
+                <ButtonLink href="/staffing/contact" variant="primary" size="lg">
+                  Tell us what you need <span aria-hidden="true">→</span>
                 </ButtonLink>
                 <ButtonLink href="/staffing" variant="ghost" size="lg">
                   Other roles
@@ -121,7 +118,7 @@ export default async function RolePage({
 
               <dl className="mt-8 space-y-px overflow-hidden rounded-md border border-border-soft bg-border-soft">
                 <div className="flex items-baseline justify-between gap-4 bg-bg px-4 py-3.5">
-                  <dt className="text-[0.88rem] font-light text-fg-secondary">
+                  <dt className="text-[0.93rem] font-light text-fg-secondary">
                     Typical US in-house cost
                   </dt>
                   <dd className="font-mono text-[0.85rem] tabular-nums text-fg-tertiary">
@@ -129,7 +126,7 @@ export default async function RolePage({
                   </dd>
                 </div>
                 <div className="flex items-baseline justify-between gap-4 bg-bg px-4 py-3.5">
-                  <dt className="text-[0.88rem] font-light text-fg-secondary">
+                  <dt className="text-[0.93rem] font-light text-fg-secondary">
                     Difference
                   </dt>
                   <dd className="font-mono text-[0.85rem] tabular-nums text-fg">
@@ -167,7 +164,7 @@ export default async function RolePage({
                       aria-hidden="true"
                       className="mt-[0.72rem] h-px w-3 shrink-0 bg-accent"
                     />
-                    <p className="py-1 text-[0.95rem] leading-[1.65] font-light text-fg-secondary">
+                    <p className="py-1 text-[1rem] leading-[1.65] font-light text-fg-secondary">
                       {item}
                     </p>
                   </div>
@@ -195,13 +192,34 @@ export default async function RolePage({
                   <h3 className="mt-5 font-display text-[1.02rem] leading-snug font-medium text-fg">
                     {step.title}
                   </h3>
-                  <p className="mt-3 text-[0.89rem] leading-[1.68] font-light text-fg-secondary">
+                  <p className="mt-3 text-[0.94rem] leading-[1.68] font-light text-fg-secondary">
                     {step.desc}
                   </p>
                 </div>
               </RevealItem>
             ))}
           </RevealGroup>
+        </div>
+      </section>
+
+      {/* The stage disclosure. A role page that carries the full promise
+          without it is the one place this site would read as overselling. */}
+      <section className="border-t border-border-soft py-16 md:py-20">
+        <div className="shell">
+          <div className="max-w-[68ch] rounded-lg border border-border-line bg-surface-1 p-7 md:p-8">
+            <h2 className="label-mono">{`// ${STAFFING_STATUS.eyebrow}`}</h2>
+            <p className="mt-6 font-display text-[1.2rem] leading-snug font-medium text-fg">
+              {STAFFING_STATUS.title}
+            </p>
+            {STAFFING_STATUS.body.map((para) => (
+              <p
+                key={para}
+                className="mt-4 text-[0.97rem] leading-[1.72] font-light text-fg-secondary"
+              >
+                {para}
+              </p>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -220,7 +238,7 @@ export default async function RolePage({
                     <h3 className="font-display text-[1.05rem] font-medium text-fg">
                       {other.name}
                     </h3>
-                    <p className="mt-1.5 text-[0.88rem] font-light text-fg-secondary">
+                    <p className="mt-1.5 text-[0.93rem] font-light text-fg-secondary">
                       {other.tagline}
                     </p>
                   </div>
@@ -228,7 +246,7 @@ export default async function RolePage({
                     aria-hidden="true"
                     className="shrink-0 font-mono text-accent transition-transform duration-300 group-hover:translate-x-1"
                   >
-                    →
+                    <span aria-hidden="true">→</span>
                   </span>
                 </Link>
               </RevealItem>

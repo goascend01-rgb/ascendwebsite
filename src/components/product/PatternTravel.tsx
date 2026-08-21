@@ -46,7 +46,7 @@ export function PatternTravel() {
               <h3 className="mt-6 font-display text-[1.02rem] font-medium text-fg">
                 {step.title}
               </h3>
-              <p className="mt-3 max-w-[38ch] text-[0.89rem] leading-[1.68] font-light text-fg-secondary">
+              <p className="mt-3 max-w-[38ch] text-[0.94rem] leading-[1.68] font-light text-fg-secondary">
                 {step.body}
               </p>
             </div>

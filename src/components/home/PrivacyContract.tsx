@@ -36,7 +36,7 @@ export function PrivacyContract() {
                       {item.allowed ? "✓" : "✗"}
                     </span>
                     <p
-                      className={`text-[0.93rem] leading-[1.68] font-light ${
+                      className={`text-[0.98rem] leading-[1.68] font-light ${
                         item.allowed ? "text-fg-secondary" : "text-fg-tertiary"
                       }`}
                     >
@@ -58,7 +58,7 @@ export function PrivacyContract() {
                 {NETWORK_HONEST.map((para, i) => (
                   <p
                     key={para}
-                    className={`text-[0.93rem] leading-[1.72] font-light ${
+                    className={`text-[0.98rem] leading-[1.72] font-light ${
                       i === NETWORK_HONEST.length - 1
                         ? "border-t border-border-soft pt-6 text-fg"
                         : "text-fg-secondary"

@@ -75,7 +75,7 @@ export function FoundingCohort() {
                     >
                       ✓
                     </span>
-                    <p className="text-[0.93rem] leading-[1.68] font-light text-fg-secondary">
+                    <p className="text-[0.98rem] leading-[1.68] font-light text-fg-secondary">
                       {benefit}
                     </p>
                   </div>
@@ -84,7 +84,7 @@ export function FoundingCohort() {
             </RevealGroup>
 
             <Reveal delay={0.1}>
-              <p className="mt-10 max-w-[58ch] rounded-lg border border-border-line bg-bg p-6 text-[0.9rem] leading-[1.7] font-light text-fg-tertiary">
+              <p className="mt-10 max-w-[58ch] rounded-lg border border-border-line bg-bg p-6 text-[0.95rem] leading-[1.7] font-light text-fg-tertiary">
                 {COHORT.ask}
               </p>
             </Reveal>

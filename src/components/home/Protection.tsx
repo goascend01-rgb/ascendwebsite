@@ -38,7 +38,7 @@ export function Protection() {
                     <h3 className="font-display text-[0.98rem] font-medium text-fg">
                       {p.title}
                     </h3>
-                    <p className="mt-2 text-[0.9rem] leading-[1.68] font-light text-fg-secondary">
+                    <p className="mt-2 text-[0.95rem] leading-[1.68] font-light text-fg-secondary">
                       {p.body}
                     </p>
                   </div>

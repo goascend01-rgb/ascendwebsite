@@ -52,9 +52,9 @@ export function Hero() {
 
             <motion.div {...rise(0.24)} className="mt-10 flex flex-wrap gap-3.5">
               <ButtonLink href="/contact" variant="primary" size="lg">
-                Get my leak report →
+                Get my leak report <span aria-hidden="true">→</span>
               </ButtonLink>
-              <ButtonLink href="#what-it-does" variant="ghost" size="lg">
+              <ButtonLink href="#every-day" variant="ghost" size="lg">
                 See what it actually does
               </ButtonLink>
             </motion.div>

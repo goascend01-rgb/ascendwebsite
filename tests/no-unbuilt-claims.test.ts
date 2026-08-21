@@ -50,6 +50,10 @@ const STAFFING_ONLY: RegExp[] = [
   /referral coordination/i,
 ];
 
+
+/** Internal product names the founder keeps off the marketing site. */
+const INTERNAL_NAMES: RegExp[] = [/Command Cent(er|re)/i, /Board Meeting/i];
+
 /** The site may deny offering a refund. It may never offer one. */
 const REFUND_OFFERS: RegExp[] = [
   /risk[- ]free/i,
@@ -128,6 +132,23 @@ describe("no unbuilt capability is claimed", () => {
 
     expect(all).toContain("We do not offer a refund.");
     expect(all).toContain("Ascend does not offer a money-back guarantee");
+  });
+
+  it("never prints an internal product name", () => {
+    const offenders: string[] = [];
+
+    for (const file of sourceFiles()) {
+      const scan = withoutComments(file);
+      for (const pattern of INTERNAL_NAMES) {
+        for (const hit of findAll(scan, pattern)) {
+          offenders.push(
+            `"${hit.match}" is an internal name, describe what it does instead, at ${locate(file, hit.index)}`
+          );
+        }
+      }
+    }
+
+    expect(offenders, offenders.join("\n")).toEqual([]);
   });
 
   it("never benchmarks a practice against its peers", () => {

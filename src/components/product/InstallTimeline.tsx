@@ -8,7 +8,14 @@ import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
    month at once. The final marker is unlit because D30+ has no closing
    date: leaving everything supervised for months is a supported way to run
    it, and the drawing should not imply otherwise. */
-export function InstallTimeline() {
+export function InstallTimeline({
+  headingLevel = 3,
+}: {
+  /** 2 on /how-it-works, where the timeline is the page's own subject and
+      sits directly under the h1. 3 wherever a section h2 already precedes it. */
+  headingLevel?: 2 | 3;
+} = {}) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   const last = INSTALL_STEPS.length - 1;
 
   return (
@@ -39,10 +46,10 @@ export function InstallTimeline() {
                 <span className="mb-2 block font-mono text-[0.66rem] tracking-[0.16em] text-fg-tertiary uppercase md:hidden">
                   {step.window}
                 </span>
-                <h3 className="font-display text-[1.08rem] leading-snug font-medium text-fg">
+                <Heading className="font-display text-[1.08rem] leading-snug font-medium text-fg">
                   {step.title}
-                </h3>
-                <p className="mt-3 max-w-[56ch] text-[0.92rem] leading-[1.7] font-light text-fg-secondary">
+                </Heading>
+                <p className="mt-3 max-w-[56ch] text-[0.97rem] leading-[1.7] font-light text-fg-secondary">
                   {step.body}
                 </p>
               </div>

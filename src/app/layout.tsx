@@ -5,6 +5,7 @@ import { Atmosphere } from "@/components/ui/Atmosphere";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { MotionProvider } from "@/components/ui/MotionProvider";
 import { SITE } from "@/lib/site";
 
 const sora = Sora({
@@ -46,6 +47,9 @@ export const metadata: Metadata = {
     "review requests and reputation for practices",
   ],
   authors: [{ name: SITE.name }],
+  /* Defaults only. Every route overrides these through `pageMetadata`, which
+     derives the social card and og:url from that route's own canonical, so a
+     link preview can no longer show the homepage for every page. */
   openGraph: {
     type: "website",
     siteName: SITE.name,
@@ -90,13 +94,15 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Atmosphere />
-        <ScrollProgress />
-        <Navbar />
-        <main id="main" className="relative z-10">
-          {children}
-        </main>
-        <Footer />
+        <MotionProvider>
+          <Atmosphere />
+          <ScrollProgress />
+          <Navbar />
+          <main id="main" className="relative z-10">
+            {children}
+          </main>
+          <Footer />
+        </MotionProvider>
       </body>
     </html>
   );

@@ -37,7 +37,7 @@ export function PlatformSection() {
                   </span>
                 </div>
 
-                <p className="mt-7 text-[0.92rem] leading-[1.7] font-light text-fg-secondary">
+                <p className="mt-7 text-[0.97rem] leading-[1.7] font-light text-fg-secondary">
                   {domain.summary}
                 </p>
               </article>
@@ -62,12 +62,12 @@ export function PlatformSection() {
             href="/platform"
             className="group mt-10 inline-flex items-center gap-3 font-mono text-[0.78rem] tracking-[0.08em] text-accent transition-colors duration-300 hover:text-accent-bright"
           >
-            Each of the six, in depth, including where it stops
+            All six in depth, plus Creative Studio, acquisition economics and the practice record
             <span
               aria-hidden="true"
               className="transition-transform duration-300 group-hover:translate-x-1"
             >
-              →
+              <span aria-hidden="true">→</span>
             </span>
           </Link>
         </Reveal>

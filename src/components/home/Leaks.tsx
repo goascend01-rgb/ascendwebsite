@@ -25,7 +25,7 @@ export function Leaks() {
                 <h3 className="font-display text-[1.12rem] leading-snug font-medium text-fg">
                   {leak.title}
                 </h3>
-                <p className="max-w-[46ch] text-[0.94rem] leading-[1.68] font-light text-fg-secondary">
+                <p className="max-w-[46ch] text-[0.99rem] leading-[1.68] font-light text-fg-secondary">
                   {leak.body}
                 </p>
               </article>
@@ -34,7 +34,7 @@ export function Leaks() {
         </RevealGroup>
 
         <Reveal delay={0.1}>
-          <p className="mt-10 max-w-[62ch] text-[0.94rem] leading-[1.7] font-light text-fg-tertiary">
+          <p className="mt-10 max-w-[62ch] text-[0.99rem] leading-[1.7] font-light text-fg-tertiary">
             Every practice has all four. They persist because a practice has
             finite hands and infinite small, unglamorous, revenue-critical
             follow-ups.

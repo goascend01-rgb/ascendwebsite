@@ -53,6 +53,26 @@ describe("no unresolved placeholder reaches a page", () => {
     }
   });
 
+  /* The guard used to inspect ONE token out of five, because its single regex
+     could not match a value containing a comma, and reported "All founder
+     tokens resolved" regardless. A checker that can silently see nothing is
+     worse than no checker: it turns an absent safety net into a believed one.
+     This pins the self-check that now prevents that. */
+  it("can actually see every token it claims to check", () => {
+    const result = spawnSync(process.execPath, [SCRIPT], { encoding: "utf8" });
+    const output = `${result.stdout}${result.stderr}`;
+    const declared = Object.keys(TOKENS).length;
+
+    if (result.status === 0) {
+      expect(
+        output,
+        `the guard must report how many tokens it inspected, and it must be all ${declared}`
+      ).toContain(`${declared} checked`);
+    } else {
+      expect(output).not.toContain("not seeing every token");
+    }
+  });
+
   it("reports which founder values are still outstanding", () => {
     const missing = unresolvedBlockingTokens();
     if (missing.length > 0) {
