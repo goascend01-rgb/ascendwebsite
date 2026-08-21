@@ -14,7 +14,7 @@ import { PRICING_FAQ } from "@/lib/site";
 export const metadata: Metadata = pageMetadata({
   title: "Pricing",
   description:
-    "Three tiers from $697 to $4,997 a month. The difference is how much of the running you do. Annual is two months free, thirty days notice, no exit fee, and no money-back guarantee: a ninety day working commitment instead.",
+    "Three tiers from PKR 24,000 to PKR 150,000 a month, and a founding price of PKR 35,000 for the first twenty practices. Billed monthly by bank transfer, thirty days notice, no exit fee, and no money-back guarantee: a ninety day working commitment instead.",
   path: "/pricing",
 });
 
@@ -24,7 +24,7 @@ export default function PricingPage() {
       <PageHero
         label="// Pricing"
         title={<>Three tiers. The difference is how much of the running you do.</>}
-        lead="Annual is two months free on any tier. Groups and multi-site are priced per location with a real discount at scale."
+        lead="Billed monthly by bank transfer. Multi-site is priced per location with a real discount at scale, and the first twenty practices hold a founding price for the life of the account."
       />
 
       <section className="pb-8">

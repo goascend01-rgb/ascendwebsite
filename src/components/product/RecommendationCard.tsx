@@ -60,7 +60,7 @@ export function RecommendationCard({ delay = 0 }: { delay?: number }) {
 
           <p className="mt-3 text-[0.92rem] leading-[1.65] font-light text-fg-secondary">
             64 patients cancelled or no-showed in the last 3 months and never
-            rebooked. A win-back campaign could recover an estimated $3,584 (at a
+            rebooked. A win-back campaign could recover an estimated PKR 153,600 (at a
             20% return rate).
           </p>
 

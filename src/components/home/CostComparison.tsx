@@ -1,4 +1,4 @@
-import { COST_COMPARISON, TIERS } from "@/lib/site";
+import { COST_COMPARISON, TIERS, COHORT } from "@/lib/site";
 import { money } from "@/lib/leak";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
@@ -15,8 +15,14 @@ export function CostComparison() {
     <section className="py-24 md:py-28">
       <div className="shell">
         <SectionHeader
-          label="// Cost comparison"
-          title={<>What one subscription replaces.</>}
+          label="// The comparison that actually matters"
+          title={
+            <>
+              Less than half a receptionist,{" "}
+              <span className="text-fg-secondary">and it works all night.</span>
+            </>
+          }
+          lead="Nobody here is replacing six software subscriptions. You are comparing this to a person, and the person goes home at eight."
         />
 
         <div className="mt-16 overflow-hidden rounded-lg border border-border-line">
@@ -58,11 +64,17 @@ export function CostComparison() {
                   "linear-gradient(to right, var(--accent-dim), transparent 70%)",
               }}
             >
-              <p className="font-display text-[1.06rem] font-medium text-fg">
-                Ascend {operator?.name}, all of it, one system
-              </p>
+              <div className="min-w-0">
+                <p className="font-display text-[1.06rem] font-medium text-fg">
+                  Ascend {operator?.name}, all of it, one system
+                </p>
+                <p className="mt-1.5 text-[0.88rem] font-light text-fg-tertiary">
+                  Founding price for the first {COHORT.size} practices. List is{" "}
+                  {money(operator?.monthly ?? 0)}.
+                </p>
+              </div>
               <p className="shrink-0 font-display text-[1.9rem] leading-none font-semibold tabular-nums text-accent">
-                {money(operator?.monthly ?? 0)}
+                {money(operator?.foundingMonthly ?? operator?.monthly ?? 0)}
                 <span className="ml-2 font-mono text-[0.7rem] font-normal tracking-[0.12em] text-fg-tertiary uppercase">
                   / month
                 </span>
@@ -73,10 +85,12 @@ export function CostComparison() {
 
         <Reveal delay={0.12}>
           <p className="mt-8 max-w-[68ch] text-[0.97rem] leading-[1.72] font-light text-fg-tertiary">
-            Ranges are typical published US market rates, for comparison rather
-            than measured. The only number that matters is what your stack costs,
-            and we will price against yours on the call. If Ascend does not beat
-            it, we will say so.
+            Salary ranges are what a competent front desk person costs in Lahore,
+            Karachi or Islamabad today, for comparison rather than measured. The
+            only number that matters is what yours costs you, and we will price
+            against that on the call. If Ascend does not beat it, we will say so.
+            And it is not a swap: the person handles the room, Ascend handles the
+            eleven o&rsquo;clock WhatsApp message they were never going to answer.
           </p>
         </Reveal>
       </div>

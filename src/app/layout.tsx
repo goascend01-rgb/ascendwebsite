@@ -25,7 +25,7 @@ const spaceMono = Space_Mono({
 const TAGLINE = "The AI operator for independent practices";
 
 const DESCRIPTION =
-  "Ascend answers every enquiry across chat, SMS, WhatsApp, Instagram and Messenger, refills the chair a cancellation empties, and brings back the patients who quietly stopped coming. Assisted by default: nothing reaches a patient until you approve it.";
+  "Ascend answers every enquiry on WhatsApp, Instagram, Messenger and your website, refills the chair a cancellation empties, and brings back the patients who quietly stopped coming. Built for independent practices in Pakistan. Assisted by default: nothing reaches a patient until you approve it.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -38,12 +38,12 @@ export const metadata: Metadata = {
      inside an inclusive enumeration in body copy. */
   keywords: [
     "AI operator for independent practices",
+    "WhatsApp receptionist for clinics Pakistan",
+    "clinic management software Pakistan",
     "patient reactivation software",
     "practice front desk automation",
     "fill cancelled appointments automatically",
-    "AI receptionist for web chat and WhatsApp",
     "patient recall and win back",
-    "practice management operating system",
     "review requests and reputation for practices",
   ],
   authors: [{ name: SITE.name }],

@@ -19,7 +19,7 @@ export const SITE = {
   name: "Ascend",
   domain: "goascend.co",
   url: "https://goascend.co",
-  email: "hello@goascend.co",
+  email: "info@goascend.co",
   // No phone until a real one exists. Do not put a placeholder here.
 };
 
@@ -63,12 +63,13 @@ export const LEAKS: { index: string; title: string; body: string }[] = [
 
 /* --------------------------- The leak model ---------------------------
    Single source for the calculator. Every rate is a placeholder and the
-   page says so. At these defaults the model returns 136 visits, $38,080.
+   page says so. At these defaults the model returns 136 visits and
+   PKR 1,632,000.
    ---------------------------------------------------------------------- */
 
 export const LEAK_MODEL = {
   activePatients: 1200,
-  averageVisitValue: 280,
+  averageVisitValue: 12_000,
   inactiveRate: 0.08,
   recoveryRate: 0.15,
   cancellationsPerWeek: 2,
@@ -92,7 +93,7 @@ export type LeakField = {
 
 export const LEAK_FIELDS: LeakField[] = [
   { key: "activePatients", label: "Active patients", kind: "count", min: 0, max: 20000, step: 50, group: "shared" },
-  { key: "averageVisitValue", label: "Average visit value", kind: "money", min: 0, max: 3000, step: 10, group: "shared" },
+  { key: "averageVisitValue", label: "Average visit value", kind: "money", min: 0, max: 150_000, step: 500, group: "shared" },
   { key: "inactiveRate", label: "Go inactive per year", kind: "rate", min: 0, max: 0.5, step: 0.01, group: "reactivation" },
   { key: "recoveryRate", label: "Recovered at", kind: "rate", min: 0, max: 1, step: 0.01, group: "reactivation" },
   { key: "cancellationsPerWeek", label: "Unfilled cancellations per week", kind: "count", min: 0, max: 60, step: 1, group: "slots" },
@@ -128,7 +129,7 @@ export const PRODUCT_TRUTH_CARDS: ProductTruthCard[] = [
     state: "HIGH",
     title: "Win back 64 patients who slipped away",
     reason:
-      "64 patients cancelled or no-showed in the last 3 months and never rebooked. A win-back campaign could recover an estimated $3,584 (at a 20% return rate).",
+      "64 patients cancelled or no-showed in the last 3 months and never rebooked. A win-back campaign could recover an estimated PKR 153,600 (at a 20% return rate).",
     chip: "Estimated · assumptions shown",
     evidence: "estimated",
   },
@@ -148,7 +149,7 @@ export const PRODUCT_TRUTH_CARDS: ProductTruthCard[] = [
     state: "",
     title: "Not yet measurable",
     reason:
-      "Not $0. Zero would mean we checked and nothing happened. This means the evidence has not arrived yet, and it names what it is waiting for.",
+      "Not PKR 0. Zero would mean we checked and nothing happened. This means the evidence has not arrived yet, and it names what it is waiting for.",
     chip: "",
     evidence: "unknown",
   },
@@ -202,9 +203,9 @@ export const DOMAINS: Domain[] = [
     eyebrow: "FRONT DESK",
     name: "Answers everything",
     summary:
-      "Web chat, SMS, WhatsApp, Instagram and Facebook Messenger. Grounded strictly in your knowledge base. It will not invent a price or a policy, and it hands over the moment it does not know. Anything clinical is routed, before a model is chosen, to the only tier that is able to hand off to a person. That decision lives in code rather than in a prompt, so no cheap tier can answer a safety question just because it recognised a keyword.",
+      "WhatsApp first, because that is where your patients already are, and then Instagram, Facebook Messenger, the web widget and SMS. Grounded strictly in your knowledge base. It will not invent a price or a policy, and it hands over the moment it does not know. Anything clinical is routed, before a model is chosen, to the only tier that is able to hand off to a person. That decision lives in code rather than in a prompt, so no cheap tier can answer a safety question just because it recognised a keyword.",
     detail: [
-      "Channels: web chat widget, SMS, WhatsApp, Instagram DM, Facebook Messenger.",
+      "Channels, in the order they matter here: WhatsApp, Instagram DM, Facebook Messenger, the web chat widget and SMS. A patient who messages your clinic at 11pm on WhatsApp gets a real answer instead of a blue tick.",
       "Every answer is grounded in your knowledge base: your prices, your policies, your hours, your services. When it does not have the answer it says so and hands over, rather than producing something plausible.",
       "The routing happens before any model is involved. A greeting, an opening hours question or a directions question is answered deterministically at no cost. A pricing or insurance question goes to a knowledge base tier, which has your knowledge base and no ability to escalate. Anything clinical, anything urgent, and any explicit request for a human goes straight to the full receptionist, which is the only tier that can hand off to a person. That ordering is code, not an instruction in a prompt, which means it cannot be talked out of it, and a safety question can never be pulled down to a tier that could not escalate even if it wanted to.",
     ],
@@ -379,8 +380,12 @@ export type Tier = {
   id: "front-desk" | "operator" | "partner";
   eyebrow: string;
   name: string;
+  /** List price per month, PKR. */
   monthly: number;
   install: number;
+  /** Founding cohort price, where the tier has one. Locked for the life of
+      the account. Only Operator carries one. */
+  foundingMonthly?: number;
   highlight?: boolean;
   includes: string[];
   excludes?: string[];
@@ -391,8 +396,8 @@ export const TIERS: Tier[] = [
     id: "front-desk",
     eyebrow: "ENTRY · YOU RUN IT",
     name: "Front Desk",
-    monthly: 697,
-    install: 995,
+    monthly: 24_000,
+    install: 30_000,
     includes: [
       "Receptionist on web chat, SMS and WhatsApp",
       "Grounded in your knowledge base",
@@ -410,8 +415,9 @@ export const TIERS: Tier[] = [
     id: "operator",
     eyebrow: "CORE · WE INSTALL, YOU STEER",
     name: "Operator",
-    monthly: 1997,
-    install: 2500,
+    monthly: 65_000,
+    foundingMonthly: 35_000,
+    install: 75_000,
     highlight: true,
     includes: [
       "Everything in Front Desk",
@@ -432,8 +438,8 @@ export const TIERS: Tier[] = [
     id: "partner",
     eyebrow: "PREMIUM · WE RUN IT",
     name: "Partner",
-    monthly: 4997,
-    install: 7500,
+    monthly: 150_000,
+    install: 200_000,
     includes: [
       "Everything in Operator",
       "A named operator, weekly",
@@ -447,14 +453,14 @@ export const TIERS: Tier[] = [
   },
 ];
 
+/* The comparison that closes in Pakistan is a salary, not a software stack.
+   Nobody here is paying for six SaaS subscriptions to replace; they are paying
+   a person, and the person goes home at eight. */
 export const COST_COMPARISON: { item: string; low: number; high: number }[] = [
-  { item: "Part-time front desk or patient coordinator", low: 1800, high: 2600 },
-  { item: "After hours answering service", low: 300, high: 800 },
-  { item: "Patient communications platform", low: 400, high: 600 },
-  { item: "Reputation and review management", low: 400, high: 600 },
-  { item: "Practice analytics", low: 400, high: 1000 },
-  { item: "Social media agency", low: 1500, high: 3000 },
-  { item: "Recall and reactivation outreach", low: 800, high: 2000 },
+  { item: "One front desk person, clinic hours only", low: 50_000, high: 80_000 },
+  { item: "Cover when they are on leave or off sick", low: 6_000, high: 12_000 },
+  { item: "Recruiting and retraining when they move on", low: 5_000, high: 10_000 },
+  { item: "A social media page somebody runs on the side", low: 15_000, high: 40_000 },
 ];
 
 export const PRICING_FAQ: { q: string; a: string }[] = [
@@ -473,6 +479,14 @@ export const PRICING_FAQ: { q: string; a: string }[] = [
   {
     q: "Is there a contract?",
     a: "Thirty days notice, no exit fee, export any time. The install fee buys the install and is not an activation toll.",
+  },
+  {
+    q: "How do we pay?",
+    a: "Bank transfer, monthly, invoiced at the start of the month. Card processing for Pakistani businesses is still awkward enough that we would rather not build the price around it. If you would prefer to prepay a quarter we will discount it, and if you would rather stay monthly that is the default and it costs you nothing.",
+  },
+  {
+    q: "Why should we buy this before the bigger clinics in the US do?",
+    a: "Because you can. Selling this in the United States means clearing a vendor agreement chain that we are still working through. Here there is nothing in the way, WhatsApp is already built and it is already the channel your patients use. The first twenty practices in Pakistan get the founding price and the direct line, and they get them because they are early rather than because we discounted.",
   },
   {
     q: "Why is there no free trial or money-back guarantee?",
@@ -565,10 +579,13 @@ export const PROTECTIONS: { title: string; body: string }[] = [
 /* ---------------------------- The founding cohort ---------------------------- */
 
 export const COHORT = {
-  size: 10,
-  nextPrice: 2497,
+  size: 20,
+  /** What the founding cohort pays, locked. */
+  foundingPrice: 35_000,
+  /** What everyone after them pays. */
+  nextPrice: 65_000,
   benefits: [
-    "Price locked for the life of the account. Cohort two opens at $2,497 and does not come back down.",
+    "PKR 35,000 a month, locked for the life of the account, against a list price of PKR 65,000. It does not come back down.",
     "Direct access to the founder, not a support tier.",
     "Your requests go to the front of the roadmap, and you will see them ship.",
     "A knowledge module built around how you practise, which becomes part of what Ascend knows.",
@@ -594,19 +611,19 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     quote:
       "The reactivation list was the thing I always meant to get to and never did. Ascend built it from our own history in an afternoon and then asked before it sent a single message.",
-    attribution: "Practice owner · two-location group · Texas",
+    attribution: "Practice owner · two-location group · Lahore",
     status: "placeholder",
   },
   {
     quote:
-      "I did not want another dashboard. What changed my mind was watching it run in shadow mode for two weeks and seeing it was right about things I would have missed.",
-    attribution: "Practice manager · single site · Arizona",
+      "Half our bookings come through WhatsApp and most of them arrive after we have closed. It answers them properly now, in our own words, and I read every one before it went out for the first fortnight.",
+    attribution: "Practice manager · single site · Karachi",
     status: "placeholder",
   },
   {
     quote:
       "It told me it could not measure something yet. I have never had a piece of software do that, and it is the reason I trust the numbers it does give me.",
-    attribution: "Clinical director · three-location group · Florida",
+    attribution: "Clinical director · three-location group · Islamabad",
     status: "placeholder",
   },
 ];
@@ -645,7 +662,7 @@ export const PRINCIPLES: { index: string; title: string; body: string }[] = [
 
 export const SECURITY_SECTIONS: { title: string; body: string }[] = [
   {
-    title: "Where PHI lives",
+    title: "Where patient data lives",
     body: "Patient data is processed by five vendors and no others: Anthropic for AI, Twilio for SMS and WhatsApp, Meta for Instagram and Facebook Messenger, Neon for the database, Render for the application.",
   },
   {

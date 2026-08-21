@@ -5,7 +5,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { money } from "@/lib/leak";
+import { usd } from "@/lib/leak";
 import {
   ROLES,
   PRICE_ITEMS,
@@ -82,13 +82,13 @@ export default function StaffingPage() {
 
                   <div className="mt-7 border-t border-border-soft pt-5">
                     <p className="font-display text-[1.35rem] leading-none font-semibold tabular-nums text-fg">
-                      {money(role.price)}
+                      {usd(role.price)}
                       <span className="ml-1.5 font-mono text-[0.66rem] font-normal tracking-[0.1em] text-fg-tertiary uppercase">
                         / month
                       </span>
                     </p>
                     <p className="mt-2.5 font-mono text-[0.64rem] tracking-[0.1em] text-fg-muted uppercase">
-                      Against a typical US in-house cost of {money(role.inHouse)}
+                      Against a typical US in-house cost of {usd(role.inHouse)}
                     </p>
                     <span className="mt-5 inline-flex items-center gap-2 font-mono text-[0.7rem] tracking-[0.08em] text-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
                       View role
@@ -152,10 +152,10 @@ export default function StaffingPage() {
                         {item.desc}
                       </td>
                       <td className="px-6 py-4 text-right font-mono text-[0.95rem] tabular-nums text-accent">
-                        {money(item.price)}
+                        {usd(item.price)}
                       </td>
                       <td className="px-6 py-4 text-right font-mono text-[0.9rem] tabular-nums text-fg-muted">
-                        {money(item.inHouse)}
+                        {usd(item.inHouse)}
                       </td>
                     </tr>
                   ))}

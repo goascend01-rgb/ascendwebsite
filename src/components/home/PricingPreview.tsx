@@ -12,7 +12,7 @@ export function PricingPreview() {
         <SectionHeader
           label="// Pricing"
           title={<>Three tiers. The difference is how much of the running you do.</>}
-          lead="Annual is two months free on any tier. Groups and multi-site are priced per location with a real discount at scale."
+          lead="Billed monthly by bank transfer. Multi-site is priced per location, and the first twenty practices hold a founding price for the life of the account."
         />
 
         <div className="mt-16">

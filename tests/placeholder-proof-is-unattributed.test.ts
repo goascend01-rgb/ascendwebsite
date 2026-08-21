@@ -8,7 +8,16 @@ import { PROOF_MODE, TESTIMONIALS } from "@/lib/site";
    to prevent. So attribution is role, practice shape and region, and this
    guard fails the moment somebody adds a name back. */
 
-const US_REGIONS = new Set([
+/* Pakistan first, 2026-08-21. The US list is kept below it rather than
+   deleted: Ascend Staffing still sells into the United States, and the US
+   platform positioning is one branch away (see MARKET-POSITIONING.md), so a
+   restore should not also have to rediscover this list. */
+const REGIONS = new Set([
+  // Pakistan, where the platform sells today
+  "Lahore", "Karachi", "Islamabad", "Rawalpindi", "Faisalabad", "Multan",
+  "Peshawar", "Quetta", "Sialkot", "Gujranwala", "Hyderabad", "Bahawalpur",
+  "Punjab", "Sindh", "Islamabad Capital Territory",
+  // United States, retained for the staffing business and the US branch
   "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
   "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
   "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
@@ -18,7 +27,6 @@ const US_REGIONS = new Set([
   "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
   "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia",
   "Washington", "West Virginia", "Wisconsin", "Wyoming",
-  "the Midwest", "the Northeast", "the Southwest", "the Pacific Northwest",
 ]);
 
 const PERSON_TITLE = /\b(Dr\.?|DDS|DMD|MD|RDH|Mr\.?|Mrs\.?|Ms\.?)\b/;
@@ -62,8 +70,8 @@ describe("placeholder proof carries no invented person or business", () => {
       }
 
       expect(
-        US_REGIONS.has(region),
-        `"${region}" is not a recognised region. Use a US state or a broad region, never a city plus a practice name.`
+        REGIONS.has(region),
+        `"${region}" is not a recognised region. Use a Pakistani city or province, or a US state, never a city plus a practice name.`
       ).toBe(true);
     }
   );

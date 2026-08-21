@@ -30,7 +30,7 @@ export type DailyBeat = {
 
 export const EVERY_DAY: DailyBeat[] = [
   {
-    trigger: "A patient asks something",
+    trigger: "A patient messages on WhatsApp at 11pm",
     response: "Ascend answers, from your knowledge base",
     where: "front-desk",
   },
@@ -405,7 +405,7 @@ export const PLATFORM_MODULES: {
   {
     group: "Front desk",
     items: [
-      { name: "Unified inbox", body: "Web chat, SMS, WhatsApp, Instagram and Facebook Messenger in one thread per patient." },
+      { name: "Unified inbox", body: "WhatsApp, Instagram, Facebook Messenger, the web widget and SMS, in one thread per patient." },
       { name: "Knowledge base", body: "Your prices, policies, hours and services, with Ascend reporting where patients asked something it could not answer." },
       { name: "Deterministic routing", body: "Greetings and opening hours answered at no cost, clinical and urgent messages sent straight to a human before any model reads them." },
       { name: "Kept promises", body: "When the receptionist tells a patient somebody will follow up, that becomes a task with a person attached, and Ascend measures whether it was kept." },

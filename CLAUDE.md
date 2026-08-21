@@ -9,6 +9,41 @@
 
 ---
 
+## Market: Pakistan first, US on a branch
+
+**Founder decision, 2026-08-21.** The platform sells into Pakistan today. The
+US is the strategic target and is gated on the LLC, BAA coverage and payments,
+none of which are resolved. So the site sells what exists now.
+
+**The US positioning is preserved at branch `us-positioning` and tag
+`us-positioning-v1` (commit `238aec0`), both pushed.** Read
+`MARKET-POSITIONING.md` before changing anything priced or market-facing: it
+records exactly what differs and how to switch back.
+
+What this means in practice:
+
+- **Currency is split on purpose.** `money()` in `src/lib/leak.ts` is PKR and
+  serves the platform. `usd()` serves Ascend Staffing. **Ascend Staffing sells
+  Pakistani professionals INTO US practices and stays in dollars.** Do not
+  unify these, and do not "make the site Pakistani" by dragging `/staffing`
+  along with it.
+- **WhatsApp leads.** It is not one of five channels here, it is the channel,
+  and it is already built. Channel lists are ordered accordingly.
+- **The anchor is a salary, not a software stack.** A front desk person in
+  Lahore, Karachi or Islamabad is PKR 50,000 to 80,000. That is what the
+  comparison is against, and the footnote says explicitly that this is not a
+  headcount swap.
+- **Billed monthly by bank transfer.** Stripe does not operate in Pakistan.
+  Annual prepay is not the default and the copy should not assume it.
+- **No HIPAA gate.** The architecture claims on `/security` are unchanged and
+  still true; the framing is no longer US law. HIPAA and BAA language belongs
+  to the US branch and to the staffing business.
+- Founding cohort is **20 practices at PKR 35,000 locked**, against a PKR
+  65,000 list price. `COHORT.size` drives the copy, so reprice the data and
+  the prose follows.
+
+---
+
 ## The one rule that matters
 
 > Every claim on this website must be something the Ascend codebase can actually do today, and the product's willingness to say "I do not know yet" is the strongest selling point it has.

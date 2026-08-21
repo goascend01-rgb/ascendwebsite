@@ -14,7 +14,7 @@ const rise = (delay: number) => ({
 
 const CHIPS = [
   "Assisted by default",
-  "Built for HIPAA",
+  "Answers on WhatsApp",
   "Export any time, no exit fee",
 ];
 
@@ -29,7 +29,7 @@ export function Hero() {
               {...rise(0)}
               className="font-mono text-[0.68rem] leading-relaxed tracking-[0.2em] text-accent uppercase"
             >
-              Founding cohort · 10 practices · price locked for life
+              Founding cohort · 20 practices · PKR 35,000 locked for life
             </motion.p>
 
             <motion.h1

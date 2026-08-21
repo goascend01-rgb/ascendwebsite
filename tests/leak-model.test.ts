@@ -8,11 +8,11 @@ import { LEAK_MODEL } from "@/lib/site";
    numbers, and a row with no inputs is not applicable rather than zero. */
 
 describe("the leak model", () => {
-  it("returns 136 visits and $38,080 at the shipped defaults", () => {
+  it("returns 136 visits and PKR 1,632,000 at the shipped defaults", () => {
     const result = computeLeaks(LEAK_MODEL);
 
     expect(result.totalVisits).toBe(136);
-    expect(result.totalValue).toBe(38080);
+    expect(result.totalValue).toBe(1_632_000);
   });
 
   it("floors every row to whole visits", () => {
@@ -20,6 +20,7 @@ describe("the leak model", () => {
     const byId = Object.fromEntries(result.rows.map((r) => [r.id, r]));
 
     // 1200 * 0.08 = 96 inactive, 96 * 0.15 = 14.4, floored to 14
+    // 136 visits at PKR 12,000 = PKR 1,632,000
     expect(result.inactivePerYear).toBe(96);
     expect(byId.reactivation.visits).toBe(14);
     // 2 * 52 = 104 slots, 104 * 0.6 = 62.4, floored to 62

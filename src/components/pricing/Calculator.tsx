@@ -55,7 +55,7 @@ function Field({
         step={field.step}
         value={value}
         /* Without this a rate slider is announced as "0.08" and the money one
-           as "280". The visible <output> already shows 8% and $280, and the
+           as "12000". The visible <output> already shows 8% and PKR 12,000, and the
            two should not disagree. */
         aria-valuetext={formatField(field, value)}
         onChange={(e) => onChange(Number(e.target.value))}

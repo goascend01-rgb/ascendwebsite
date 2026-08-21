@@ -70,18 +70,27 @@ export function TierCards({
                 {tier.name}
               </Heading>
 
+              {/* Where a founding price exists it IS the price this
+                  practice pays, so it leads. The list price stays visible
+                  beside it rather than being implied by a discount badge. */}
               <p className="mt-5 flex items-baseline gap-2">
                 <span
                   className={`font-display text-[2.1rem] leading-none font-semibold tabular-nums ${
                     tier.highlight ? "text-accent" : "text-fg"
                   }`}
                 >
-                  {money(tier.monthly)}
+                  {money(tier.foundingMonthly ?? tier.monthly)}
                 </span>
                 <span className="font-mono text-[0.68rem] tracking-[0.12em] text-fg-tertiary uppercase">
                   / month
                 </span>
               </p>
+              {tier.foundingMonthly && (
+                <p className="mt-2 text-[0.82rem] leading-relaxed font-light text-fg-tertiary">
+                  Founding price, locked for the life of the account. List is{" "}
+                  {money(tier.monthly)}.
+                </p>
+              )}
               <p className="mt-2 font-mono text-[0.68rem] tracking-[0.1em] text-fg-muted uppercase">
                 Install {money(tier.install)}
               </p>

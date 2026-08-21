@@ -10,7 +10,7 @@ import { LEAK_MODEL, type LeakInputs } from "./site";
       keeps "we measured it and it was zero" apart from "this does not
       apply", and the page behaves like the product.
 
-   At the shipped defaults this returns 136 visits and $38,080. */
+   At the shipped defaults this returns 136 visits and PKR 1,632,000. */
 
 export type RowState = "estimated" | "not_applicable";
 
@@ -108,7 +108,23 @@ export function computeLeaks(input: LeakInputs = LEAK_MODEL): LeakResult {
   };
 }
 
+/* Two currencies, deliberately separate.
+
+   The platform sells in Pakistan and prices in rupees. Ascend Staffing places
+   Pakistani professionals INTO US practices and prices in dollars. A single
+   shared formatter would render $1,290 as PKR 1,290 the moment the platform
+   repriced, so the two are named for their market and cannot be confused. */
+
+/** Platform pricing. Pakistan. */
 export const money = (n: number) =>
+  n.toLocaleString("en-US", {
+    style: "currency",
+    currency: "PKR",
+    maximumFractionDigits: 0,
+  });
+
+/** Ascend Staffing pricing, which is billed to US practices in dollars. */
+export const usd = (n: number) =>
   n.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",

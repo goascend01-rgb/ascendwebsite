@@ -25,7 +25,7 @@ import { SITE, TIERS } from "@/lib/site";
 export const metadata: Metadata = pageMetadata({
   title: "Ascend · The AI operator for independent practices",
   description:
-    "Ascend answers every enquiry across chat, SMS, WhatsApp, Instagram and Messenger, refills the chair a cancellation empties, brings back patients who quietly stopped coming, and shows its reasoning before it acts. Assisted by default.",
+    "Ascend answers every enquiry on WhatsApp and every other channel your patients use, refills the chair a cancellation empties, brings back patients who quietly stopped coming, and shows its reasoning before it acts. Assisted by default.",
   path: "/",
 });
 

@@ -8,7 +8,7 @@ import {
   STAFFING_FOOTNOTE,
   STAFFING_STATUS,
 } from "@/lib/staffing";
-import { money } from "@/lib/leak";
+import { usd } from "@/lib/leak";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -109,7 +109,7 @@ export default async function RolePage({
 
               <p className="mt-7 flex items-baseline gap-2">
                 <span className="font-display text-[2.6rem] leading-none font-semibold tabular-nums text-accent">
-                  {money(role.price)}
+                  {usd(role.price)}
                 </span>
                 <span className="font-mono text-[0.7rem] tracking-[0.12em] text-fg-tertiary uppercase">
                   / month
@@ -122,7 +122,7 @@ export default async function RolePage({
                     Typical US in-house cost
                   </dt>
                   <dd className="font-mono text-[0.85rem] tabular-nums text-fg-tertiary">
-                    {money(role.inHouse)}
+                    {usd(role.inHouse)}
                   </dd>
                 </div>
                 <div className="flex items-baseline justify-between gap-4 bg-bg px-4 py-3.5">
@@ -130,7 +130,7 @@ export default async function RolePage({
                     Difference
                   </dt>
                   <dd className="font-mono text-[0.85rem] tabular-nums text-fg">
-                    {money(savings)}
+                    {usd(savings)}
                     <span className="ml-2 text-fg-muted">({savingsPct}%)</span>
                   </dd>
                 </div>

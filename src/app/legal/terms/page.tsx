@@ -143,7 +143,7 @@ export default function TermsPage() {
           items={[
             "Subscription fees are billed monthly in advance, in US dollars, at the tier stated on your order form.",
             "The install fee is billed once, at signature, and buys the installation work described in your order form.",
-            "Annual terms are billed in advance and carry two months free.",
+            "Fees are invoiced monthly in advance and settled by bank transfer. Where a customer prepays a longer term, any discount is stated on the order form.",
             "Founding cohort accounts hold their monthly price for the life of the account, provided the account remains continuously active.",
             "Fees are exclusive of applicable taxes.",
           ]}

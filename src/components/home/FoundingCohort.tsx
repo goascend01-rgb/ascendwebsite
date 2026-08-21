@@ -4,7 +4,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
 
 /* Spec section 6.17. The scarcity is real and it is structural, so the
-   drawing makes the mechanism visible: ten slots, of which the first three
+   drawing makes the mechanism visible: the slots, of which the first three
    are what carries a pattern over the publication floor. The number is not
    a deadline, it is a threshold. */
 export function FoundingCohort() {
@@ -17,7 +17,7 @@ export function FoundingCohort() {
           <div>
             <SectionHeader
               label="// Why now, and it is not a fake deadline"
-              title={<>The founding cohort is ten practices.</>}
+              title={<>The founding cohort is {COHORT.size} practices.</>}
             />
 
             <Reveal delay={0.16}>
